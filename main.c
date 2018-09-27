@@ -3,8 +3,52 @@
 #include <stdio.h>
 #include <sqlite3.h>
 #include <string.h>
+#include <stdlib.h>
 
 int cb = 0;
+
+static void create_example_db(char *name)
+{
+	char *szErrMsg;
+
+	const char const *q1 = "CREATE TABLE `Exercises` ( `ExerciseId` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `Name` TEXT NOT NULL, `Sets` INTEGER DEFAULT 1, `Reps` INTEGER DEFAULT 1, `Time` TEXT, `Rest` TEXT, `Weight` NUMERIC DEFAULT 0, `isWarmup` INTEGER DEFAULT 0, `Note` TEXT, `Tempo` TEXT, `Station` TEXT, `SessionId` INTEGER, FOREIGN KEY(`SessionId`) REFERENCES `Session`(`SessionId`) )";
+	const char const *q2 = "CREATE TABLE `Sessions` ( `SessionId` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `Name` TEXT NOT NULL, `Place` TEXT, `Start` NUMERIC, `End` TEXT, `Note` TEXT, `Feeling` INTEGER )";
+	sqlite3 *db;
+	const char const *qdata1 = "INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Weightlifting', 'Leimen', '2018-05-23 11:00', '2018-05-23 12:00')";
+	const char const *qdata2 = "INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Bodyweight', 'Sunnypark', '2018-05-24 09:00', '2018-05-23 09:30')";
+	const char const *qdata3 = "INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `SessionId`) VALUES ('Push-Ups', '2', '20', '2')";
+
+	if (sqlite3_open(name, &db))
+		goto error;
+
+	if( SQLITE_OK != sqlite3_exec(db, q1, NULL, 0, &szErrMsg))
+		goto error;
+
+	if( SQLITE_OK != sqlite3_exec(db, q2, NULL, 0, &szErrMsg))
+		goto error;
+
+	if( SQLITE_OK != sqlite3_exec(db, qdata1, NULL, 0, &szErrMsg))
+		goto error;
+
+	if( SQLITE_OK != sqlite3_exec(db, qdata2, NULL, 0, &szErrMsg))
+		goto error;
+
+	if( SQLITE_OK != sqlite3_exec(db, qdata3, NULL, 0, &szErrMsg))
+		goto error;
+
+	sqlite3_close(db);
+	return;
+
+error:
+	if (szErrMsg)
+	{
+		printf("SQL error: %s\n", szErrMsg);
+		sqlite3_free(szErrMsg);
+	}
+	else
+		printf("SQL error");
+		exit(1);
+}
 
 static int callback(void *NotUsed, int argc, char **argv, char **azColName){
 	cb = 1;
@@ -22,8 +66,16 @@ int main(int argc, char *argv[])
 
 	if (argc < 3)
 	{
-		printf("Usage: test file_name session_name\n");
+		printf("Usage:\n");
+		printf("test newlog file_name - Create new log\n");
+		printf("test file_name session_name - Display session\n");
 		return 1;
+	}
+
+	if (strcmp(argv[1], "newlog") == 0)
+	{
+		create_example_db(argv[2]);
+		return 0;
 	}
 
     int status = sqlite3_open(argv[1], &db);
@@ -37,7 +89,7 @@ int main(int argc, char *argv[])
 	char query[256];
 	query[0] = '\0';
 
-	sprintf(query, "SELECT Exercise.Name, \"Set\", \"Reps\", Weight FROM Exercise INNER JOIN Session ON Exercise.SessionId=Session.Id WHERE Session.Name = '%s';", argv[2]);
+	sprintf(query, "SELECT Exercises.Name, Sets, Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = '%s';", argv[2]);
 
 	char *szErrMsg = 0;
 	status = sqlite3_exec(db, query, callback, 0, &szErrMsg);
