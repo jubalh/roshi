@@ -9,32 +9,30 @@ int cb = 0;
 
 static void create_example_db(char *name)
 {
+	sqlite3 *db;
 	char *szErrMsg;
 
-	const char const *q1 = "CREATE TABLE `Exercises` ( `ExerciseId` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `Name` TEXT NOT NULL, `Sets` INTEGER DEFAULT 1, `Reps` INTEGER DEFAULT 1, `Time` TEXT, `Rest` TEXT, `Weight` NUMERIC DEFAULT 0, `isWarmup` INTEGER DEFAULT 0, `Note` TEXT, `Tempo` TEXT, `Station` TEXT, `SessionId` INTEGER, FOREIGN KEY(`SessionId`) REFERENCES `Session`(`SessionId`) )";
-	const char const *q2 = "CREATE TABLE `Sessions` ( `SessionId` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `Name` TEXT NOT NULL, `Place` TEXT, `Start` NUMERIC, `End` TEXT, `Note` TEXT, `Feeling` INTEGER )";
-	sqlite3 *db;
-	const char const *qdata1 = "INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Weightlifting', 'Leimen', '2018-05-23 11:00', '2018-05-23 12:00')";
-	const char const *qdata2 = "INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Bodyweight', 'Sunnypark', '2018-05-24 09:00', '2018-05-23 09:30')";
-	const char const *qdata3 = "INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `SessionId`) VALUES ('Push-Ups', '2', '20', '2')";
+	char *query[] = { 
+		"CREATE TABLE `Exercises` ( `ExerciseId` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `Name` TEXT NOT NULL, `Sets` INTEGER DEFAULT 1, `Reps` INTEGER DEFAULT 1, `Time` TEXT, `Rest` TEXT, `Weight` NUMERIC DEFAULT 0, `isWarmup` INTEGER DEFAULT 0, `Note` TEXT, `Tempo` TEXT, `Station` TEXT, `SessionId` INTEGER, FOREIGN KEY(`SessionId`) REFERENCES `Session`(`SessionId`) )",
+
+		"CREATE TABLE `Sessions` ( `SessionId` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `Name` TEXT NOT NULL, `Place` TEXT, `Start` NUMERIC, `End` TEXT, `Note` TEXT, `Feeling` INTEGER )",
+
+		"INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Weightlifting', 'Leimen', '2018-05-23 11:00', '2018-05-23 12:00')",
+		
+		"INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Bodyweight', 'Sunnypark', '2018-05-24 09:00', '2018-05-23 09:30')",
+
+		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `SessionId`) VALUES ('Push-Ups', '2', '20', '2')",
+
+		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionId`) VALUES ('Squat', '5', '5', '80', '1')" };
 
 	if (sqlite3_open(name, &db))
 		goto error;
 
-	if( SQLITE_OK != sqlite3_exec(db, q1, NULL, 0, &szErrMsg))
-		goto error;
-
-	if( SQLITE_OK != sqlite3_exec(db, q2, NULL, 0, &szErrMsg))
-		goto error;
-
-	if( SQLITE_OK != sqlite3_exec(db, qdata1, NULL, 0, &szErrMsg))
-		goto error;
-
-	if( SQLITE_OK != sqlite3_exec(db, qdata2, NULL, 0, &szErrMsg))
-		goto error;
-
-	if( SQLITE_OK != sqlite3_exec(db, qdata3, NULL, 0, &szErrMsg))
-		goto error;
+	for (int i=0; i<6; i++)
+	{
+		if( SQLITE_OK != sqlite3_exec(db, query[i], NULL, 0, &szErrMsg))
+			goto error;
+	}
 
 	sqlite3_close(db);
 	return;
