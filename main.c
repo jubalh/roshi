@@ -45,8 +45,10 @@ error:
 		sqlite3_free(szErrMsg);
 	}
 	else
+	{
 		printf("SQL error");
 		exit(1);
+	}
 }
 
 static int db_operation_callback(void *NotUsed, int argc, char **argv, char **azColName){
