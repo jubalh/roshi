@@ -5,8 +5,18 @@
 #include <string.h>
 #include <sqlite3.h>
 #include <unistd.h>
+#include <readline/readline.h>
 
 int cb_called = 0;
+
+static void sql_submit(char *filename, char *query)
+{
+	sqlite3 *db;
+	sqlite3_open(filename, &db);
+	if( SQLITE_OK != sqlite3_exec(db, query, NULL, 0, NULL))
+		printf("error");
+	sqlite3_close(db);
+}
 
 static void create_example_db(char *name)
 {
@@ -105,6 +115,49 @@ static void cmd_show(char *filename, char *session)
 	sqlite3_close(db);
 }
 
+// Nr of SESSION_FIELDs
+#define MAX_S_ENUM_FIELDS 7
+// Enum to access the readline buffer for the session
+enum SESSION_FIELDS {
+	SNAME = 0,
+	SPLACE,
+	SDATE,
+	SSTART,
+	SEND,
+	SNOTES,
+	SFEELING
+};
+
+static void cmd_add(char *filename)
+{
+	char *b[MAX_S_ENUM_FIELDS];
+
+	for (int i=0; i<MAX_S_ENUM_FIELDS; i++)
+		b[i] = NULL;
+
+	printf("----------\n");
+	printf("New Session\n");
+	printf("----------\n");
+
+	b[SNAME] = readline("Session name: ");
+	b[SPLACE] = readline("Place: ");
+	b[SDATE] = readline("Date: ");
+	b[SSTART] = readline("Start time: ");
+	b[SEND] = readline("End time: ");
+	b[SNOTES] = readline("Notes: ");
+	b[SFEELING] = readline("Feeling: ");
+
+	char query[1024];
+	snprintf(query, 1023, "INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('%s', '%s', '%s', '%s')", b[SNAME], b[SPLACE], "2018-09-28 10:00", "2018-08-28 11:00");
+
+	sql_submit(filename, query);
+
+	for (int i=0; i<MAX_S_ENUM_FIELDS; i++)
+	{
+		free(b[i]);
+	}
+}
+
 int main(int argc, char *argv[])
 {
 	if (argc < 3)
@@ -127,6 +180,9 @@ int main(int argc, char *argv[])
 		if (strcmp(argv[2], "show") == 0)
 		{
 			cmd_show(argv[1], argv[3]);
+		} else if (strcmp(argv[2], "add") == 0)
+		{
+			cmd_add(argv[1]);
 		}
 	}
 }
