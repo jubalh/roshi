@@ -48,8 +48,9 @@ error:
 		exit(1);
 }
 
-static int callback(void *NotUsed, int argc, char **argv, char **azColName){
+static int db_operation_callback(void *NotUsed, int argc, char **argv, char **azColName){
 	cb_called = 1;
+
 	if (strcmp(argv[3], "0") == 0)
 		printf("%s: %sx%s\n", argv[0], argv[1], argv[2]);
 	else
@@ -58,47 +59,62 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName){
 	return 0;
 }
 
-int main(int argc, char *argv[])
+static void print_usage()
+{
+	printf("Usage:\n");
+	printf("roshi newlog file_name - Create new log\n");
+	printf("roshi file_name session_name - Display session\n");
+}
+
+static void cmd_newlog(char *filename)
+{
+	create_example_db(filename);
+	exit(0);
+}
+
+static void db_operation(char *filename, char *session)
 {
 	sqlite3 *db;
-
-	if (argc < 3)
-	{
-		printf("Usage:\n");
-		printf("test newlog file_name - Create new log\n");
-		printf("test file_name session_name - Display session\n");
-		return 1;
-	}
-
-	if (strcmp(argv[1], "newlog") == 0)
-	{
-		create_example_db(argv[2]);
-		return 0;
-	}
-
-    int status = sqlite3_open(argv[1], &db);
-	if (status)
+	int rc = sqlite3_open(filename, &db);
+	if (rc)
 	{
 		printf("Error");
 		sqlite3_close(db);
-		return 1;
+		exit(1);
 	}
 
 	char query[256];
 	query[0] = '\0';
 
-	sprintf(query, "SELECT Exercises.Name, Sets, Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = '%s';", argv[2]);
+	sprintf(query, "SELECT Exercises.Name, Sets, Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = '%s';", session);
 
 	char *szErrMsg = 0;
-	status = sqlite3_exec(db, query, callback, 0, &szErrMsg);
-	if( status!=SQLITE_OK )
+	rc = sqlite3_exec(db, query, db_operation_callback, 0, &szErrMsg);
+	if( rc!=SQLITE_OK )
 	{
 		printf("SQL error: %s\n", szErrMsg);
 		sqlite3_free(szErrMsg);
 	}
 
 	if (cb_called == 0)
-		printf("No such session: %s\n", argv[2]);
+		printf("No such session: %s\n", session);
 
 	sqlite3_close(db);
+}
+
+int main(int argc, char *argv[])
+{
+
+	if (argc < 3)
+	{
+		print_usage();
+		exit(1);
+	}
+
+	if (strcmp(argv[1], "newlog") == 0)
+	{
+		cmd_newlog(argv[2]);
+	} else {
+		db_operation(argv[1], argv[2]);
+	}
 }
