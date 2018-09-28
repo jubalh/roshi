@@ -51,7 +51,7 @@ error:
 	}
 }
 
-static int db_operation_callback(void *NotUsed, int argc, char **argv, char **azColName){
+static int cmd_show_callback(void *NotUsed, int argc, char **argv, char **azColName){
 	cb_called = 1;
 
 	if (strcmp(argv[3], "0") == 0)
@@ -75,7 +75,7 @@ static void cmd_newlog(char *filename)
 	exit(0);
 }
 
-static void db_operation(char *filename, char *session)
+static void cmd_show(char *filename, char *session)
 {
 	sqlite3 *db;
 	int rc = sqlite3_open(filename, &db);
@@ -92,7 +92,7 @@ static void db_operation(char *filename, char *session)
 	sprintf(query, "SELECT Exercises.Name, Sets, Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = '%s';", session);
 
 	char *szErrMsg = 0;
-	rc = sqlite3_exec(db, query, db_operation_callback, 0, &szErrMsg);
+	rc = sqlite3_exec(db, query, cmd_show_callback, 0, &szErrMsg);
 	if( rc!=SQLITE_OK )
 	{
 		printf("SQL error: %s\n", szErrMsg);
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 
 		if (strcmp(argv[2], "show") == 0)
 		{
-			db_operation(argv[1], argv[3]);
+			cmd_show(argv[1], argv[3]);
 		}
 	}
 }
