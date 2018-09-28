@@ -128,6 +128,12 @@ enum SESSION_FIELDS {
 	SFEELING
 };
 
+char ** cmd_add_completion(const char *text, int start, int end)
+{
+	rl_attempted_completion_over = 1;
+	return NULL;
+}
+
 static void cmd_add(char *filename)
 {
 	char *b[MAX_S_ENUM_FIELDS];
@@ -138,6 +144,8 @@ static void cmd_add(char *filename)
 	printf("----------\n");
 	printf("New Session\n");
 	printf("----------\n");
+
+	rl_attempted_completion_function = cmd_add_completion;
 
 	b[SNAME] = readline("Session name: ");
 	b[SPLACE] = readline("Place: ");
