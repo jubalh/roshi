@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sqlite3.h>
+#include <unistd.h>
 
 int cb_called = 0;
 
@@ -115,6 +116,12 @@ int main(int argc, char *argv[])
 	{
 		cmd_newlog(argv[2]);
 	} else {
+		if (access(argv[1], F_OK) == -1)
+		{
+			print_usage();
+			exit(1);
+		}
+
 		db_operation(argv[1], argv[2]);
 	}
 }
