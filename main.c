@@ -63,8 +63,8 @@ static int db_operation_callback(void *NotUsed, int argc, char **argv, char **az
 static void print_usage()
 {
 	printf("Usage:\n");
-	printf("roshi newlog file_name - Create new log\n");
-	printf("roshi file_name session_name - Display session\n");
+	printf("roshi file_name newlog - Create new log\n");
+	printf("roshi file_name show session_name - Display session\n");
 }
 
 static void cmd_newlog(char *filename)
@@ -105,23 +105,26 @@ static void db_operation(char *filename, char *session)
 
 int main(int argc, char *argv[])
 {
-
 	if (argc < 3)
 	{
 		print_usage();
 		exit(1);
 	}
 
-	if (strcmp(argv[1], "newlog") == 0)
+	if (strcmp(argv[2], "newlog") == 0)
 	{
-		cmd_newlog(argv[2]);
+		cmd_newlog(argv[1]);
 	} else {
-		if (access(argv[1], F_OK) == -1)
+		// if db doesnt exist or no further argument
+		if ( (access(argv[1], F_OK) == -1) || argc < 4)
 		{
 			print_usage();
 			exit(1);
 		}
 
-		db_operation(argv[1], argv[2]);
+		if (strcmp(argv[2], "show") == 0)
+		{
+			db_operation(argv[1], argv[3]);
+		}
 	}
 }
