@@ -1,11 +1,11 @@
 // vim: noexpandtab:ts=4:sts=4:sw=4
 
 #include <stdio.h>
-#include <sqlite3.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+#include <sqlite3.h>
 
-int cb = 0;
+int cb_called = 0;
 
 static void create_example_db(char *name)
 {
@@ -49,7 +49,7 @@ error:
 }
 
 static int callback(void *NotUsed, int argc, char **argv, char **azColName){
-	cb = 1;
+	cb_called = 1;
 	if (strcmp(argv[3], "0") == 0)
 		printf("%s: %sx%s\n", argv[0], argv[1], argv[2]);
 	else
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 		sqlite3_free(szErrMsg);
 	}
 
-	if (cb == 0)
+	if (cb_called == 0)
 		printf("No such session: %s\n", argv[2]);
 
 	sqlite3_close(db);
