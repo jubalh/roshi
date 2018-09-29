@@ -77,6 +77,7 @@ static void print_usage()
 	printf("Usage:\n");
 	printf("roshi file_name newlog - Create new log\n");
 	printf("roshi file_name show session_name - Display session\n");
+	printf("roshi file_name add - Add session\n");
 }
 
 static void cmd_newlog(char *filename)
