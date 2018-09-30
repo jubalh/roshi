@@ -2,3 +2,6 @@
 
 roshi: main.c
 	gcc -o roshi main.c commands.c -lsqlite3 -lreadline
+
+clean:
+	rm roshi

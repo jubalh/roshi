@@ -67,12 +67,13 @@ static void sql_submit(char *filename, char *query)
 {
 	sqlite3 *db;
 	sqlite3_open(filename, &db);
-	if( SQLITE_OK != sqlite3_exec(db, query, NULL, 0, NULL))
+	if(SQLITE_OK != sqlite3_exec(db, query, NULL, 0, NULL))
 		printf("error");
 	sqlite3_close(db);
 }
 
-static int cmd_show_callback(void *NotUsed, int argc, char **argv, char **azColName){
+static int cmd_show_callback(void *NotUsed, int argc, char **argv, char **azColName)
+{
 	cb_called = 1;
 
 	if (strcmp(argv[3], "0") == 0)
@@ -83,10 +84,58 @@ static int cmd_show_callback(void *NotUsed, int argc, char **argv, char **azColN
 	return 0;
 }
 
+static int cmd_add_session_completion_callback(void *buffer, int argc, char **argv, char **azColName)
+{
+	char *b = (char*)buffer;
+	if (b[0] == '\0')
+		strcpy(b, argv[0]);
+	return 0;
+}
+
+char * session_name_generator(const char *text, int state)
+{
+	static sqlite3 *db;
+    char *name;
+	static char completion_buffer[1024];
+
+	// first call
+	if (!state) {
+		completion_buffer[0] = '\0';
+		int rc = sqlite3_open("db.db", &db);
+		if (rc)
+		{
+			printf("Error");
+			sqlite3_close(db);
+			exit(1);
+		}
+		char query[256];
+		query[0] = '\0';
+
+		sprintf(query, "SELECT Sessions.Name FROM Sessions WHERE Sessions.Name LIKE '%s%%'", text);
+
+		char *szErrMsg = 0;
+		rc = sqlite3_exec(db, query, cmd_add_session_completion_callback, completion_buffer, &szErrMsg);
+		if( rc!=SQLITE_OK )
+		{
+			printf("SQL error: %s\n", szErrMsg);
+			sqlite3_free(szErrMsg);
+		}
+		sqlite3_close(db);
+    }
+
+	if (completion_buffer[0] != '\0')
+	{
+		char *s = strdup(completion_buffer);
+		completion_buffer[0] = '\0';
+		return s;
+	}
+    return NULL;
+}
+
 char ** cmd_add_completion(const char *text, int start, int end)
 {
 	rl_attempted_completion_over = 1;
-	return NULL;
+	return rl_completion_matches(text, session_name_generator);
 }
 
 void cmd_newlog(char *filename)
