@@ -18,11 +18,25 @@ enum SESSION_FIELDS {
 	SFEELING
 };
 
-int cb_called = 0;
+static int cb_called = 0;
+static sqlite3 *g_db;
+
+static void open_db(char *filename)
+{
+	if (sqlite3_open(filename, &g_db))
+	{
+		printf("SQL error");
+		exit(1);
+	}
+}
+
+static void close_db()
+{
+	sqlite3_close(g_db);
+}
 
 static void create_example_db(char *name)
 {
-	sqlite3 *db;
 	char *szErrMsg;
 
 	char *query[] = { 
@@ -38,16 +52,13 @@ static void create_example_db(char *name)
 
 		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionId`) VALUES ('Squat', '5', '5', '80', '1')" };
 
-	if (sqlite3_open(name, &db))
-		goto error;
 
 	for (int i=0; i<6; i++)
 	{
-		if( SQLITE_OK != sqlite3_exec(db, query[i], NULL, 0, &szErrMsg))
+		if( SQLITE_OK != sqlite3_exec(g_db, query[i], NULL, 0, &szErrMsg))
 			goto error;
 	}
 
-	sqlite3_close(db);
 	return;
 
 error:
@@ -65,11 +76,8 @@ error:
 
 static void sql_submit(char *filename, char *query)
 {
-	sqlite3 *db;
-	sqlite3_open(filename, &db);
-	if(SQLITE_OK != sqlite3_exec(db, query, NULL, 0, NULL))
+	if(SQLITE_OK != sqlite3_exec(g_db, query, NULL, 0, NULL))
 		printf("error");
-	sqlite3_close(db);
 }
 
 static int cmd_show_callback(void *NotUsed, int argc, char **argv, char **azColName)
@@ -94,33 +102,24 @@ static int cmd_add_session_completion_callback(void *buffer, int argc, char **ar
 
 char * session_name_generator(const char *text, int state)
 {
-	static sqlite3 *db;
     char *name;
 	static char completion_buffer[1024];
 
 	// first call
 	if (!state) {
 		completion_buffer[0] = '\0';
-		int rc = sqlite3_open("db.db", &db);
-		if (rc)
-		{
-			printf("Error");
-			sqlite3_close(db);
-			exit(1);
-		}
 		char query[256];
 		query[0] = '\0';
 
 		sprintf(query, "SELECT Sessions.Name FROM Sessions WHERE Sessions.Name LIKE '%s%%'", text);
 
 		char *szErrMsg = 0;
-		rc = sqlite3_exec(db, query, cmd_add_session_completion_callback, completion_buffer, &szErrMsg);
+		int rc = sqlite3_exec(g_db, query, cmd_add_session_completion_callback, completion_buffer, &szErrMsg);
 		if( rc!=SQLITE_OK )
 		{
 			printf("SQL error: %s\n", szErrMsg);
 			sqlite3_free(szErrMsg);
 		}
-		sqlite3_close(db);
     }
 
 	if (completion_buffer[0] != '\0')
@@ -140,28 +139,23 @@ char ** cmd_add_completion(const char *text, int start, int end)
 
 void cmd_newlog(char *filename)
 {
+	open_db(filename);
 	create_example_db(filename);
+	close_db();
 	exit(0);
 }
 
 void cmd_show(char *filename, char *session)
 {
-	sqlite3 *db;
-	int rc = sqlite3_open(filename, &db);
-	if (rc)
-	{
-		printf("Error");
-		sqlite3_close(db);
-		exit(1);
-	}
-
 	char query[256];
 	query[0] = '\0';
 
 	sprintf(query, "SELECT Exercises.Name, Sets, Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = '%s';", session);
 
+    open_db(filename);
+
 	char *szErrMsg = 0;
-	rc = sqlite3_exec(db, query, cmd_show_callback, 0, &szErrMsg);
+	int rc = sqlite3_exec(g_db, query, cmd_show_callback, 0, &szErrMsg);
 	if( rc!=SQLITE_OK )
 	{
 		printf("SQL error: %s\n", szErrMsg);
@@ -171,7 +165,8 @@ void cmd_show(char *filename, char *session)
 	if (cb_called == 0)
 		printf("No such session: %s\n", session);
 
-	sqlite3_close(db);
+	close_db();
+
 }
 
 void cmd_add(char *filename)
@@ -185,6 +180,7 @@ void cmd_add(char *filename)
 	printf("New Session\n");
 	printf("----------\n");
 
+    open_db(filename);
 	rl_attempted_completion_function = cmd_add_completion;
 
 	b[SNAME] = readline("Session name: ");
@@ -204,4 +200,6 @@ void cmd_add(char *filename)
 	{
 		free(b[i]);
 	}
+
+	close_db();
 }
