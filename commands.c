@@ -1,7 +1,6 @@
 // vim: noexpandtab:ts=4:sts=4:sw=4
 
 #include <stdlib.h> // exit()
-#include <sqlite3.h>
 #include <readline/readline.h>
 #include "sql.h"
 

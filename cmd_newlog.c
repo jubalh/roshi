@@ -2,7 +2,6 @@
 
 #include <stdlib.h> // exit()
 #include <stdio.h> // printf()
-#include <sqlite3.h>
 #include "sql.h"
 
 static void create_example_db(char *name)
