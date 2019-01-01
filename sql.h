@@ -8,4 +8,3 @@ extern sqlite3 *g_db;
 
 void open_db(char *filename);
 void close_db();
-void sql_submit(char *filename, char *query);

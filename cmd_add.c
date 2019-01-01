@@ -94,7 +94,8 @@ void cmd_add(char *filename)
 	char query[1024];
 	snprintf(query, 1023, "INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('%s', '%s', '%s', '%s')", b[SNAME], b[SPLACE], "2018-09-28 10:00", "2018-08-28 11:00");
 
-	sql_submit(filename, query);
+	if(SQLITE_OK != sqlite3_exec(g_db, query, NULL, 0, NULL))
+		printf("error");
 
 	for (int i=0; i<MAX_S_ENUM_FIELDS; i++)
 	{

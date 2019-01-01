@@ -21,9 +21,3 @@ void close_db()
 	sqlite3_close(g_db);
 	sqlite3_shutdown();
 }
-
-void sql_submit(char *filename, char *query)
-{
-	if(SQLITE_OK != sqlite3_exec(g_db, query, NULL, 0, NULL))
-		printf("error");
-}
