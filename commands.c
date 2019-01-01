@@ -52,10 +52,12 @@ static void create_example_db(char *name)
 
 		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `SessionId`) VALUES ('Push-Ups', '2', '20', '2')",
 
-		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionId`) VALUES ('Squat', '5', '5', '80', '1')" };
+		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionId`) VALUES ('Squat', '5', '5', '80', '1')",
+
+		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionId`) VALUES ('Squat', '10', '10', '35', '1')" };
 
 
-	for (int i=0; i<6; i++)
+	for (int i=0; i<7; i++)
 	{
 		if( SQLITE_OK != sqlite3_exec(g_db, query[i], NULL, 0, &szErrMsg))
 			goto error;
@@ -238,6 +240,38 @@ void cmd_list(char *filename)
 	while( sqlite3_step(stmt) == SQLITE_ROW ) {
 		data = (const char*)sqlite3_column_text( stmt, 0 );
 		printf( "%s\n", data ? data : "[NULL]" );
+	}
+
+	sqlite3_finalize(stmt);
+	close_db();
+}
+
+void cmd_analyze(char *filename)
+{
+	char *szErrMsg = 0;
+	sqlite3_stmt *stmt = NULL;
+
+	open_db(filename);
+
+	int rc = sqlite3_prepare_v2(g_db, "SELECT Exercises.Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = 'Weightlifting';", -1, &stmt, NULL );
+	if( rc!=SQLITE_OK )
+	{
+		if (szErrMsg) {
+			printf("SQL error: %s\n", szErrMsg);
+			sqlite3_free(szErrMsg);
+		} else {
+			printf("SQL error: %s\n", szErrMsg);
+		}
+		close_db();
+		exit(1);
+	}
+
+	const char *reps = NULL;
+	const char *weight = NULL;
+	while( sqlite3_step(stmt) == SQLITE_ROW ) {
+		reps = (const char*)sqlite3_column_text( stmt, 0 );
+		weight = (const char*)sqlite3_column_text( stmt, 1 );
+		printf( "%s %s\n", reps, weight);
 	}
 
 	sqlite3_finalize(stmt);

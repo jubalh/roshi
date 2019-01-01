@@ -47,6 +47,8 @@ int main(int argc, char *argv[])
 			cmd_add(argv[1]);
 		} else if (strcmp(argv[2], "list") == 0) {
 			cmd_list(argv[1]);
+		} else if (strcmp(argv[2], "analyze") == 0) {
+			cmd_analyze(argv[1]);
 		} else {
 			print_usage();
 			exit(1);
