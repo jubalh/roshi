@@ -19,14 +19,6 @@ static int cmd_show_callback(void *NotUsed, int argc, char **argv, char **azColN
 	return 0;
 }
 
-void cmd_newlog(char *filename)
-{
-	open_db(filename);
-	create_example_db(filename);
-	close_db();
-	exit(0);
-}
-
 void cmd_show(char *filename, char *session)
 {
 	char query[256];
