@@ -1,1 +1,3 @@
-./roshi
+roshi
+*.db
+*.o
