@@ -183,9 +183,8 @@ void cmd_add(char *filename)
 	for (int i=0; i<MAX_S_ENUM_FIELDS; i++)
 		b[i] = NULL;
 
-	printf("----------\n");
 	printf("New Session\n");
-	printf("----------\n");
+	printf("-----------------------\n");
 
     open_db(filename);
 	rl_attempted_completion_function = cmd_add_completion_session;
@@ -209,5 +208,38 @@ void cmd_add(char *filename)
 		free(b[i]);
 	}
 
+	close_db();
+}
+
+void cmd_list(char *filename)
+{
+	char *szErrMsg = 0;
+	sqlite3_stmt *stmt = NULL;
+
+	open_db(filename);
+
+	int rc = sqlite3_prepare_v2(g_db, "SELECT Sessions.Name FROM Sessions", -1, &stmt, NULL );
+	if( rc!=SQLITE_OK )
+	{
+		if (szErrMsg) {
+			printf("SQL error: %s\n", szErrMsg);
+			sqlite3_free(szErrMsg);
+		} else {
+			printf("SQL error: %s\n", szErrMsg);
+		}
+		close_db();
+		exit(1);
+	}
+
+	printf("List of sessions:\n");
+	printf("-----------------------\n");
+
+	const char *data = NULL;
+	while( sqlite3_step(stmt) == SQLITE_ROW ) {
+		data = (const char*)sqlite3_column_text( stmt, 0 );
+		printf( "%s\n", data ? data : "[NULL]" );
+	}
+
+	sqlite3_finalize(stmt);
 	close_db();
 }

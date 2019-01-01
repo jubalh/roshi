@@ -10,6 +10,7 @@ static void print_usage()
 {
 	printf("Usage:\n");
 	printf("roshi file_name newlog - Create new log\n");
+	printf("roshi file_name list - List logged sessions\n");
 	printf("roshi file_name show session_name - Display session\n");
 	printf("roshi file_name add - Add session\n");
 }
@@ -25,6 +26,8 @@ int main(int argc, char *argv[])
 	if (strcmp(argv[2], "newlog") == 0)
 	{
 		cmd_newlog(argv[1]);
+	} else if (strcmp(argv[2], "list") == 0) {
+		cmd_list(argv[1]);
 	} else {
 		// if db doesnt exist or no further argument
 		if ( (access(argv[1], F_OK) == -1) || argc < 4)
