@@ -26,11 +26,9 @@ int main(int argc, char *argv[])
 	if (strcmp(argv[2], "newlog") == 0)
 	{
 		cmd_newlog(argv[1]);
-	} else if (strcmp(argv[2], "list") == 0) {
-		cmd_list(argv[1]);
 	} else {
 		// if db doesnt exist or no further argument
-		if ( (access(argv[1], F_OK) == -1) || argc < 4)
+		if ( (access(argv[1], F_OK) == -1) || argc < 3)
 		{
 			print_usage();
 			exit(1);
@@ -38,10 +36,22 @@ int main(int argc, char *argv[])
 
 		if (strcmp(argv[2], "show") == 0)
 		{
-			cmd_show(argv[1], argv[3]);
-		} else if (strcmp(argv[2], "add") == 0)
-		{
+			if (argc < 4)
+			{
+				print_usage();
+				exit(1);
+			} else {
+				cmd_show(argv[1], argv[3]);
+			}
+		} else if (strcmp(argv[2], "add") == 0) {
 			cmd_add(argv[1]);
+		} else if (strcmp(argv[2], "list") == 0) {
+			cmd_list(argv[1]);
+		} else {
+			print_usage();
+			exit(1);
 		}
 	}
+
+	return 0;
 }
