@@ -4,4 +4,6 @@ roshi: main.c clean
 	gcc -g -o roshi main.c commands.c -lsqlite3 -lreadline
 
 clean:
-	rm roshi
+	if [ -e roshi ]; then \
+		rm roshi || exit 1; \
+	fi
