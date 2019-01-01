@@ -131,7 +131,13 @@ char * session_name_generator(const char *text, int state)
     return NULL;
 }
 
-char ** cmd_add_completion(const char *text, int start, int end)
+char ** cmd_add_completion_none(const char *text, int start, int end)
+{
+	rl_attempted_completion_over = 1;
+	return NULL;
+}
+
+char ** cmd_add_completion_session(const char *text, int start, int end)
 {
 	rl_attempted_completion_over = 1;
 	return rl_completion_matches(text, session_name_generator);
@@ -166,7 +172,6 @@ void cmd_show(char *filename, char *session)
 		printf("No such session: %s\n", session);
 
 	close_db();
-
 }
 
 void cmd_add(char *filename)
@@ -181,9 +186,10 @@ void cmd_add(char *filename)
 	printf("----------\n");
 
     open_db(filename);
-	rl_attempted_completion_function = cmd_add_completion;
+	rl_attempted_completion_function = cmd_add_completion_session;
 
 	b[SNAME] = readline("Session name: ");
+	rl_attempted_completion_function = cmd_add_completion_none;
 	b[SPLACE] = readline("Place: ");
 	b[SDATE] = readline("Date: ");
 	b[SSTART] = readline("Start time: ");
