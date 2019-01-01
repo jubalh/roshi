@@ -5,41 +5,50 @@
 #include <readline/readline.h>
 #include "sql.h"
 
-static int cb_called = 0;
-
-static int cmd_show_callback(void *NotUsed, int argc, char **argv, char **azColName)
-{
-	cb_called = 1;
-
-	if (strcmp(argv[3], "0") == 0)
-		printf("%s: %sx%s\n", argv[0], argv[1], argv[2]);
-	else
-		printf("%s: %skg %sx%s\n", argv[0], argv[3], argv[1], argv[2]);
-
-	return 0;
-}
-
 void cmd_show(char *filename, char *session)
 {
-	char query[256];
-	query[0] = '\0';
-
-	sprintf(query, "SELECT Exercises.Name, Sets, Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = '%s';", session);
+	char *szErrMsg = 0;
+	sqlite3_stmt *stmt = NULL;
 
     open_db(filename);
 
-	char *szErrMsg = 0;
-	int rc = sqlite3_exec(g_db, query, cmd_show_callback, 0, &szErrMsg);
+	int rc = sqlite3_prepare_v2(g_db, "SELECT Exercises.Name, Sets, Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = :str;", -1, &stmt, NULL );
 	if( rc!=SQLITE_OK )
 	{
-		printf("SQL error: %s\n", szErrMsg);
-		sqlite3_free(szErrMsg);
+		if (szErrMsg) {
+			printf("SQL error: %s\n", szErrMsg);
+			sqlite3_free(szErrMsg);
+		} else {
+			printf("SQL error: %s\n", szErrMsg);
+		}
+		close_db();
+		exit(1);
+	}
+	int idx = sqlite3_bind_parameter_index(stmt, ":str");
+    sqlite3_bind_text( stmt, idx, session, -1, SQLITE_STATIC );
+
+	const char *name = NULL;
+	const char *sets = NULL;
+	const char *reps = NULL;
+	const char *weight = NULL;
+
+	while( sqlite3_step(stmt) == SQLITE_ROW ) {
+		name = (const char*)sqlite3_column_text( stmt, 0 );
+		sets = (const char*)sqlite3_column_text( stmt, 1 );
+		reps = (const char*)sqlite3_column_text( stmt, 2 );
+		weight = (const char*)sqlite3_column_text( stmt, 3 );
+
+		if (strcmp(weight, "0") == 0)
+			printf("%s: %sx%s\n", name, sets, reps);
+		else
+			printf("%s: %skg %sx%s\n", name, weight, sets, reps);
 	}
 
-	if (cb_called == 0)
-		printf("No such session: %s\n", session);
-
+	sqlite3_finalize(stmt);
 	close_db();
+
+//	if (cb_called == 0) todo? or dont want that anyways?
+//		printf("No such session: %s\n", session);
 }
 
 void cmd_list(char *filename)
