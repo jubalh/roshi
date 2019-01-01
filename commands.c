@@ -19,11 +19,12 @@ enum SESSION_FIELDS {
 };
 
 static int cb_called = 0;
-static sqlite3 *g_db;
+static sqlite3 *g_db = NULL;
 
 static void open_db(char *filename)
 {
-	if (sqlite3_open(filename, &g_db))
+	if (SQLITE_OK != sqlite3_initialize() ||
+		sqlite3_open(filename, &g_db))
 	{
 		printf("SQL error");
 		exit(1);
@@ -33,6 +34,7 @@ static void open_db(char *filename)
 static void close_db()
 {
 	sqlite3_close(g_db);
+	sqlite3_shutdown();
 }
 
 static void create_example_db(char *name)
