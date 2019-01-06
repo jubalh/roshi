@@ -4,13 +4,22 @@
 #include <stdlib.h> // EXIT_SUCCESS
 #include "options.h"
 
+#define VERSION "0.0"
+
 static void print_usage()
 {
+
+#ifndef GIT_REV
+	printf("roshi v"VERSION"\n\n");
+#else 
+	printf("roshi v"VERSION"~"GIT_REV"\n\n");
+#endif
+
 	printf("Usage:\n");
-	printf("roshi file_name newlog - Create new log\n");
-	printf("roshi file_name list - List logged sessions\n");
-	printf("roshi file_name show session_name - Display session\n");
-	printf("roshi file_name add - Add session\n");
+	printf("roshi \e[3mfile_name\e[0m newlog - Create new training log\n");
+	printf("roshi \e[3mfile_name\e[0m list - List logged training sessions\n");
+	printf("roshi \e[3mfile_name\e[0m show session_name - Display training session\n");
+	printf("roshi \e[3mfile_name\e[0m add - Add trainig session\n");
 }
 
 int main(int argc, char *argv[])
