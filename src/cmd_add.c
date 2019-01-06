@@ -1,6 +1,7 @@
 // vim: noexpandtab:ts=4:sts=4:sw=4
 
 #include <stdlib.h> // free()
+#include <time.h> // localtime(), strftime()
 #include <readline/readline.h>
 #include "sql.h"
 
@@ -44,7 +45,7 @@ static int cmd_add_session_completion_callback(void *buffer, int argc, char **ar
 
 char * session_name_generator(const char *text, int state)
 {
-    char *name;
+	char *name;
 	static char completion_buffer[1024];
 
 	// first call
@@ -62,7 +63,7 @@ char * session_name_generator(const char *text, int state)
 			printf("SQL error: %s\n", szErrMsg);
 			sqlite3_free(szErrMsg);
 		}
-    }
+	}
 
 	if (completion_buffer[0] != '\0')
 	{
@@ -70,9 +71,9 @@ char * session_name_generator(const char *text, int state)
 		completion_buffer[0] = '\0';
 		return s;
 	}
-    return NULL;
+	return NULL;
 }
-   
+
 char ** cmd_add_completion_none(const char *text, int start, int end)
 {
 	rl_attempted_completion_over = 1;
@@ -85,6 +86,36 @@ char ** cmd_add_completion_session(const char *text, int start, int end)
 	return rl_completion_matches(text, session_name_generator);
 }
 
+int readline_time_template_hook(void) {
+	time_t t;
+	struct tm* tm_info;
+
+	time(&t);
+	tm_info = localtime(&t);
+
+	char buffer[12];
+	strftime(buffer, 12, "%H:%M:%S", tm_info);
+
+	return rl_insert_text(buffer);
+}
+
+int readline_date_template_hook(void) {
+	time_t t;
+	struct tm* tm_info;
+
+	time(&t);
+	tm_info = localtime(&t);
+
+	char buffer[12];
+	strftime(buffer, 12, "%Y-%m-%d", tm_info);
+
+	return rl_insert_text(buffer);
+}
+
+int readline_warmup_template_hook(void) {
+	return rl_insert_text("no");
+}
+
 void cmd_add(char *filename)
 {
 	char *bs[MAX_S_ENUM_FIELDS];
@@ -95,7 +126,7 @@ void cmd_add(char *filename)
 	printf("New Session\n");
 	printf("-----------------------\n");
 
-    open_db(filename);
+	open_db(filename);
 	rl_attempted_completion_function = cmd_add_completion_session;
 
 	// collect session info
@@ -103,14 +134,12 @@ void cmd_add(char *filename)
 	rl_attempted_completion_function = cmd_add_completion_none;
 	bs[SPLACE] = readline("Place: ");
 
-	/* TODO: remove later. For easier development
+	rl_startup_hook = readline_date_template_hook;
 	bs[SDATE] = readline("Date: ");
+	rl_startup_hook = readline_time_template_hook;
 	bs[SSTART] = readline("Start time: ");
 	bs[SEND] = readline("End time: ");
-	*/
-	bs[SDATE] = strdup("2018-01-01");
-	bs[SSTART] = strdup("09:00");
-	bs[SEND] = strdup("09:30");
+	rl_startup_hook = NULL;
 
 	bs[SNOTES] = readline("Notes: ");
 	bs[SFEELING] = readline("Feeling: ");
@@ -141,7 +170,9 @@ void cmd_add(char *filename)
 	be[EXTIME] = readline("Time/Duration: ");
 	be[EXTEMPO] = readline("Tempo: ");
 	be[EXREST] = readline("Rest time: ");
+	rl_startup_hook = readline_warmup_template_hook;
 	be[EXISWARMUP] = readline("Warmup set: ");
+	rl_startup_hook = NULL;
 	be[EXNOTE] = readline("Notes: ");
 
 	// submit exercise
