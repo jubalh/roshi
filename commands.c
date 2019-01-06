@@ -57,7 +57,7 @@ void cmd_list(char *filename)
 
 	open_db(filename);
 
-	int rc = sqlite3_prepare_v2(g_db, "SELECT Sessions.Name FROM Sessions", -1, &stmt, NULL );
+	int rc = sqlite3_prepare_v2(g_db, "SELECT SessionID, Name from Sessions;", -1, &stmt, NULL );
 	if( rc!=SQLITE_OK )
 	{
 		if (szErrMsg) {
@@ -73,10 +73,12 @@ void cmd_list(char *filename)
 	printf("List of sessions:\n");
 	printf("-----------------------\n");
 
-	const char *data = NULL;
+	const char *id = NULL;
+	const char *name = NULL;
 	while( sqlite3_step(stmt) == SQLITE_ROW ) {
-		data = (const char*)sqlite3_column_text( stmt, 0 );
-		printf( "%s\n", data ? data : "[NULL]" );
+		id = (const char*)sqlite3_column_text( stmt, 0 );
+		name = (const char*)sqlite3_column_text( stmt, 1 );
+		printf("%s\t%s\n", id, name);
 	}
 
 	sqlite3_finalize(stmt);
