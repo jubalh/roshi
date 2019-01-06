@@ -1,7 +1,7 @@
 # vim: noexpandtab:ts=4:sts=4:sw=4
 
-roshi: main.c clean
-	gcc -g -o roshi main.c sql.c commands.c cmd_newlog.c cmd_add.c -lsqlite3 -lreadline
+roshi: src/main.c clean
+	gcc -g -o roshi src/main.c src/sql.c src/commands.c src/cmd_newlog.c src/cmd_add.c -lsqlite3 -lreadline
 
 clean:
 	if [ -e roshi ]; then \
