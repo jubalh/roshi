@@ -4,7 +4,7 @@
 #include <readline/readline.h>
 #include "sql.h"
 
-// Nr of SESSION_FIELDs
+// Nr of SESSION_FIELDS
 #define MAX_S_ENUM_FIELDS 7
 
 // Enum to access the readline buffer for the session
@@ -16,6 +16,22 @@ enum SESSION_FIELDS {
 	SEND,
 	SNOTES,
 	SFEELING
+};
+
+// Nr of EXIERCISE_FIELDS
+#define MAX_E_ENUM_FIELDS 10
+// Enum to access the readline buffer for the exercise
+enum EXERCISE_FIELDS {
+	EXNAME = 0,
+	EXSETS,
+	EXREPS,
+	EXTIME,
+	EXREST,
+	EXWEIGHT,
+	EXISWARMUP,
+	EXNOTE,
+	EXTEMPO,
+	EXSTATION,
 };
 
 static int cmd_add_session_completion_callback(void *buffer, int argc, char **argv, char **azColName)
@@ -71,10 +87,10 @@ char ** cmd_add_completion_session(const char *text, int start, int end)
 
 void cmd_add(char *filename)
 {
-	char *b[MAX_S_ENUM_FIELDS];
+	char *bs[MAX_S_ENUM_FIELDS];
 
 	for (int i=0; i<MAX_S_ENUM_FIELDS; i++)
-		b[i] = NULL;
+		bs[i] = NULL;
 
 	printf("New Session\n");
 	printf("-----------------------\n");
@@ -82,24 +98,69 @@ void cmd_add(char *filename)
     open_db(filename);
 	rl_attempted_completion_function = cmd_add_completion_session;
 
-	b[SNAME] = readline("Session name: ");
+	// collect session info
+	bs[SNAME] = readline("Session name: ");
 	rl_attempted_completion_function = cmd_add_completion_none;
-	b[SPLACE] = readline("Place: ");
-	b[SDATE] = readline("Date: ");
-	b[SSTART] = readline("Start time: ");
-	b[SEND] = readline("End time: ");
-	b[SNOTES] = readline("Notes: ");
-	b[SFEELING] = readline("Feeling: ");
+	bs[SPLACE] = readline("Place: ");
 
-	char query[1024];
-	snprintf(query, 1023, "INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('%s', '%s', '%s', '%s')", b[SNAME], b[SPLACE], "2018-09-28 10:00", "2018-08-28 11:00");
+	/* TODO: remove later. For easier development
+	bs[SDATE] = readline("Date: ");
+	bs[SSTART] = readline("Start time: ");
+	bs[SEND] = readline("End time: ");
+	*/
+	bs[SDATE] = strdup("2018-01-01");
+	bs[SSTART] = strdup("09:00");
+	bs[SEND] = strdup("09:30");
+
+	bs[SNOTES] = readline("Notes: ");
+	bs[SFEELING] = readline("Feeling: ");
+
+	// submit session
+	char query[4096];
+	snprintf(query, 4095, "INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('%s', '%s', '%s %s', '%s %s')", bs[SNAME], bs[SPLACE], bs[SDATE], bs[SSTART], bs[SDATE], bs[SEND]);
 
 	if(SQLITE_OK != sqlite3_exec(g_db, query, NULL, 0, NULL))
 		printf("error");
 
+	// get session id
+	sqlite3_int64 session_id = sqlite3_last_insert_rowid(g_db);
+
+	// init exercise buffers
+	char *be[MAX_E_ENUM_FIELDS];
+
+	for (int i=0; i<MAX_E_ENUM_FIELDS; i++)
+		be[i] = NULL;
+
+	// collect exercise info
+	printf("\nExercises:\n");
+	be[EXSTATION] = readline("Station: ");
+	be[EXNAME] = readline("Exercise name: ");
+	be[EXWEIGHT] = readline("Weight: ");
+	be[EXSETS] = readline("Sets: ");
+	be[EXREPS] = readline("Reps: ");
+	be[EXTIME] = readline("Time/Duration: ");
+	be[EXTEMPO] = readline("Tempo: ");
+	be[EXREST] = readline("Rest time: ");
+	be[EXISWARMUP] = readline("Warmup set: ");
+	be[EXNOTE] = readline("Notes: ");
+
+	// submit exercise
+	char *szErrMsg = 0;
+	snprintf(query, 4095, "INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionID`) VALUES ('%s', '%s', '%s', '%s', '%d')", be[EXNAME], be[EXSETS], be[EXREPS], be[EXWEIGHT], session_id);
+	if(SQLITE_OK != sqlite3_exec(g_db, query, NULL, 0, &szErrMsg))
+	{
+		printf("SQL error: %s\n", szErrMsg);
+		sqlite3_free(szErrMsg);
+	}
+
+	// cleanup
 	for (int i=0; i<MAX_S_ENUM_FIELDS; i++)
 	{
-		free(b[i]);
+		free(bs[i]);
+	}
+	for (int i=0; i<MAX_E_ENUM_FIELDS; i++)
+	{
+		free(be[i]);
 	}
 
 	close_db();
