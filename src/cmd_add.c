@@ -35,42 +35,31 @@ enum EXERCISE_FIELDS {
 	EXSTATION,
 };
 
-static int cmd_add_session_completion_callback(void *buffer, int argc, char **argv, char **azColName)
-{
-	char *b = (char*)buffer;
-	if (b[0] == '\0')
-		strcpy(b, argv[0]);
-	return 0;
-}
-
 char * session_name_generator(const char *text, int state)
 {
-	char *name;
-	static char completion_buffer[1024];
+	static sqlite3_stmt *stmt = NULL;
 
 	// first call
 	if (!state) {
-		completion_buffer[0] = '\0';
-		char query[256];
+		char query[256]; //TODO: security check. if proposed session name is longer..
 		query[0] = '\0';
 
 		sprintf(query, "SELECT Sessions.Name FROM Sessions WHERE Sessions.Name LIKE '%s%%'", text);
 
-		char *szErrMsg = 0;
-		int rc = sqlite3_exec(g_db, query, cmd_add_session_completion_callback, completion_buffer, &szErrMsg);
+		int rc = sqlite3_prepare_v2(g_db, query, -1, &stmt, NULL );
 		if( rc!=SQLITE_OK )
 		{
-			printf("SQL error: %s\n", szErrMsg);
-			sqlite3_free(szErrMsg);
+			printf("error");
 		}
 	}
 
-	if (completion_buffer[0] != '\0')
-	{
-		char *s = strdup(completion_buffer);
-		completion_buffer[0] = '\0';
-		return s;
+	// go through all results and return them
+	const char *data = NULL;
+	while( sqlite3_step(stmt) == SQLITE_ROW ) {
+		data = (const char*)sqlite3_column_text( stmt, 0 );
+		return strdup(data);
 	}
+
 	return NULL;
 }
 
