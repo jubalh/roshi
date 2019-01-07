@@ -116,3 +116,35 @@ void cmd_analyze(char *filename)
 	sqlite3_finalize(stmt);
 	close_db();
 }
+
+void cmd_pr(char *filename)
+{
+	char *szErrMsg = 0;
+	sqlite3_stmt *stmt = NULL;
+
+	open_db(filename);
+
+	int rc = sqlite3_prepare_v2(g_db, "SELECT Exercises.Name, Weight FROM Exercises INNER JOIN Tags ON Exercises.ExerciseId=Tags.ExerciseId WHERE Tags.Name = 'PR'", -1, &stmt, NULL );
+	if( rc!=SQLITE_OK )
+	{
+		if (szErrMsg) {
+			printf("SQL error: %s\n", szErrMsg);
+			sqlite3_free(szErrMsg);
+		} else {
+			printf("SQL error: %s\n", szErrMsg);
+		}
+		close_db();
+		exit(1);
+	}
+
+	const char *name = NULL;
+	const char *weight = NULL;
+	while( sqlite3_step(stmt) == SQLITE_ROW ) {
+		name = (const char*)sqlite3_column_text( stmt, 0 );
+		weight = (const char*)sqlite3_column_text( stmt, 1 );
+		printf( "%s %s\n", name, weight);
+	}
+
+	sqlite3_finalize(stmt);
+	close_db();
+}

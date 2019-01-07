@@ -31,6 +31,8 @@ int parse_options(int argc, char *argv[])
             cmd_list(argv[1]);
         } else if (strcmp(argv[2], "analyze") == 0) {
             cmd_analyze(argv[1]);
+        } else if (strcmp(argv[2], "pr") == 0) {
+            cmd_pr(argv[1]);
         } else {
             return EXIT_FAILURE;
         }

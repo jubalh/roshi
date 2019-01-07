@@ -8,12 +8,17 @@ static void create_example_db(char *name)
 {
 	char *szErrMsg;
 
+	#define QUERIES  11
 	char *query[] = { 
 		"CREATE TABLE `Exercises` ( `ExerciseId` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `Name` TEXT NOT NULL, `Sets` INTEGER DEFAULT 1, `Reps` INTEGER DEFAULT 1, `Time` TEXT, `Rest` TEXT, `Weight` NUMERIC DEFAULT 0, `isWarmup` INTEGER DEFAULT 0, `Note` TEXT, `Tempo` TEXT, `Station` TEXT, `SessionId` INTEGER, FOREIGN KEY(`SessionId`) REFERENCES `Session`(`SessionId`) )",
 
 		"CREATE TABLE `Sessions` ( `SessionId` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `Name` TEXT NOT NULL, `Place` TEXT, `Start` NUMERIC, `End` TEXT, `Note` TEXT, `Feeling` INTEGER )",
 
+		"CREATE TABLE `Tags` ( `TagId` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `Name` TEXT NOT NULL, `ExerciseId` INTEGER, FOREIGN KEY(`ExerciseId`) REFERENCES `Exercises`(`ExerciseId`) )",
+
 		"INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Weightlifting', 'Leimen', '2018-05-23 11:00', '2018-05-23 12:00')",
+
+		"INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Weightlifting', 'Leimen', '2018-05-23 15:00', '2018-05-23 15:30')",
 		
 		"INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Bodyweight', 'Sunnypark', '2018-05-24 09:00', '2018-05-23 09:30')",
 
@@ -21,10 +26,14 @@ static void create_example_db(char *name)
 
 		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionId`) VALUES ('Squat', '5', '5', '80', '1')",
 
+		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionId`) VALUES ('Squat', '1', '1', '150', '2')",
+
+		"INSERT INTO `Tags` (`Name`, `ExerciseId`) VALUES ('PR', '3')",
+
 		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionId`) VALUES ('Squat', '10', '10', '35', '1')" };
 
 
-	for (int i=0; i<7; i++)
+	for (int i=0; i<QUERIES; i++)
 	{
 		if( SQLITE_OK != sqlite3_exec(g_db, query[i], NULL, 0, &szErrMsg))
 			goto error;
