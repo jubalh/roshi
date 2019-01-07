@@ -124,7 +124,7 @@ void cmd_pr(char *filename)
 
 	open_db(filename);
 
-	int rc = sqlite3_prepare_v2(g_db, "SELECT Exercises.Name, Weight FROM Exercises INNER JOIN Tags ON Exercises.ExerciseId=Tags.ExerciseId WHERE Tags.Name = 'PR'", -1, &stmt, NULL );
+	int rc = sqlite3_prepare_v2(g_db, "SELECT Exercises.Name, Exercises.Weight, Sessions.Start FROM Exercises INNER JOIN Tags ON Exercises.ExerciseId=Tags.ExerciseId INNER JOIN Sessions ON Sessions.SessionId=Exercises.SessionId ORDER BY Sessions.Start DESC", -1, &stmt, NULL );
 	if( rc!=SQLITE_OK )
 	{
 		if (szErrMsg) {
@@ -139,10 +139,12 @@ void cmd_pr(char *filename)
 
 	const char *name = NULL;
 	const char *weight = NULL;
+	const char *date = NULL;
 	while( sqlite3_step(stmt) == SQLITE_ROW ) {
 		name = (const char*)sqlite3_column_text( stmt, 0 );
 		weight = (const char*)sqlite3_column_text( stmt, 1 );
-		printf( "%s %s\n", name, weight);
+		date = (const char*)sqlite3_column_text( stmt, 2 );
+		printf( "%s %s %s\n", date, name, weight);
 	}
 
 	sqlite3_finalize(stmt);
