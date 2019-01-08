@@ -41,18 +41,29 @@ static int parse_newlog(int argc, char *argv[])
 	cmd_newlog(argv[0], dummydata);
 }
 
+static void display_help_show()
+{
+	printf("roshi \e[3mfile_name\e[0m show \e[3msession_name\e[0m: displays a session.\n\n");
+	printf("-i: Lookup session by ID instead of name\n");
+	printf("-h: Display this help\n");
+}
+
 static int parse_show(int argc, char *argv[])
 {
 	int opt;
+	char *session_search = NULL;
 
-	while ((opt = getopt(argc, argv, "h")) != -1)
+	while ((opt = getopt(argc, argv, "hi:")) != -1)
 	{
 		switch (opt)
 		{
+			// search by index
+			case 'i':
+				session_search = strdup(optarg);
+				break;
 			// help
 			case 'h':
-				printf("roshi \e[3mfile_name\e[0m show \e[3msession_name\e[0m: displays a session.\n\n");
-				printf("-h: Display this help\n");
+				display_help_show();
 				exit(EXIT_SUCCESS);
 				break;
 			// invalid option
@@ -61,7 +72,20 @@ static int parse_show(int argc, char *argv[])
 		}
 	}
 
-	cmd_show(argv[0], argv[2]);
+	if (session_search == NULL)
+	{
+		if (argc < 3)
+		{
+			display_help_show();
+			return 2;
+		}
+
+		session_search = strdup(argv[2]);
+		cmd_show(argv[0], session_search, 0);
+		free(session_search);
+	} else {
+		cmd_show(argv[0], session_search, 1);
+	}
 }
 
 static int parse_add(int argc, char *argv[])

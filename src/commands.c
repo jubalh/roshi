@@ -4,14 +4,23 @@
 #include <readline/readline.h>
 #include "sql.h"
 
-void cmd_show(char *filename, char *session)
+void cmd_show(char *filename, char *session, int isindex)
 {
+	int rc;
 	char *szErrMsg = 0;
 	sqlite3_stmt *stmt = NULL;
 
-    open_db(filename);
+	open_db(filename);
 
-	int rc = sqlite3_prepare_v2(g_db, "SELECT Exercises.Name, Sets, Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = :str;", -1, &stmt, NULL );
+	if (isindex)
+	{
+		// search for index
+		sqlite3_prepare_v2(g_db, "SELECT Exercises.Name, Sets, Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.SessionId = :str;", -1, &stmt, NULL );
+	} else {
+		// search for session name
+		sqlite3_prepare_v2(g_db, "SELECT Exercises.Name, Sets, Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = :str;", -1, &stmt, NULL );
+	}
+
 	if( rc!=SQLITE_OK )
 	{
 		if (szErrMsg) {
