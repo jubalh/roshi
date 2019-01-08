@@ -24,7 +24,7 @@ static void print_usage()
 
 int main(int argc, char *argv[])
 {
-	if (argc < 3 || EXIT_FAILURE == parse_options(argc, argv))
+	if (argc < 3 || EXIT_FAILURE == parse_options(argc-1, argv+1))
 	{
 		print_usage();
 		return EXIT_FAILURE;

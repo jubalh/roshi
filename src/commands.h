@@ -2,7 +2,7 @@
 
 #pragma once
 
-void cmd_newlog(char *filename);
+void cmd_newlog(char *filename, int dummydata);
 void cmd_show(char *filename, char *session);
 void cmd_add(char *filename);
 void cmd_list(char *filename);

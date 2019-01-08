@@ -4,11 +4,13 @@
 #include <stdio.h> // printf()
 #include "sql.h"
 
-static void create_example_db(char *name)
+static void create_example_db(int dummydata)
 {
 	char *szErrMsg;
 
-	#define QUERIES  13
+	#define BASIC_QUERIES 3
+	#define ALL_QUERIES  13
+
 	char *query[] = { 
 		"CREATE TABLE `Sessions` ( `SessionId` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `Name` TEXT NOT NULL, `Place` TEXT, `Start` NUMERIC, `End` TEXT, `Note` TEXT, `Feeling` INTEGER )",
 
@@ -30,8 +32,11 @@ static void create_example_db(char *name)
 		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `SessionId`) VALUES ('Push-Ups', '2', '20', '3')"
 	};
 
+	int queries_count = BASIC_QUERIES;
+	if (dummydata)
+		queries_count = ALL_QUERIES;
 
-	for (int i=0; i<QUERIES; i++)
+	for (int i=0; i < queries_count; i++)
 	{
 		if( SQLITE_OK != sqlite3_exec(g_db, query[i], NULL, 0, &szErrMsg))
 			goto error;
@@ -52,10 +57,10 @@ error:
 	}
 }
 
-void cmd_newlog(char *filename)
+void cmd_newlog(char *filename, int dummydata)
 {
 	open_db(filename);
-	create_example_db(filename);
+	create_example_db(dummydata);
 	close_db();
 	exit(0);
 }
