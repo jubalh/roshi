@@ -6,7 +6,7 @@
 
 sqlite3 *g_db;
 
-void open_db(char *filename)
+void open_db(const char *filename)
 {
 	if (SQLITE_OK != sqlite3_initialize() ||
 		sqlite3_open(filename, &g_db))

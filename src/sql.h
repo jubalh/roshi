@@ -6,5 +6,5 @@
 
 extern sqlite3 *g_db;
 
-void open_db(char *filename);
+void open_db(const char *filename);
 void close_db();

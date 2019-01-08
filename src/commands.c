@@ -4,7 +4,7 @@
 #include <readline/readline.h>
 #include "sql.h"
 
-void cmd_show(char *filename, char *session, int isindex)
+void cmd_show(const char *filename, const char *session, int isindex)
 {
 	int rc;
 	char *szErrMsg = 0;
@@ -59,7 +59,7 @@ void cmd_show(char *filename, char *session, int isindex)
 //		printf("No such session: %s\n", session);
 }
 
-void cmd_list(char *filename)
+void cmd_list(const char *filename)
 {
 	char *szErrMsg = 0;
 	sqlite3_stmt *stmt = NULL;
@@ -94,7 +94,7 @@ void cmd_list(char *filename)
 	close_db();
 }
 
-void cmd_analyze(char *filename)
+void cmd_analyze(const char *filename)
 {
 	char *szErrMsg = 0;
 	sqlite3_stmt *stmt = NULL;
@@ -126,7 +126,7 @@ void cmd_analyze(char *filename)
 	close_db();
 }
 
-void cmd_pr(char *filename)
+void cmd_pr(const char *filename)
 {
 	char *szErrMsg = 0;
 	sqlite3_stmt *stmt = NULL;

@@ -105,7 +105,7 @@ int readline_warmup_template_hook(void) {
 	return rl_insert_text("no");
 }
 
-void cmd_add(char *filename)
+void cmd_add(const char *filename)
 {
 	char *bs[MAX_S_ENUM_FIELDS];
 

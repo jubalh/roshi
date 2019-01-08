@@ -57,7 +57,7 @@ error:
 	}
 }
 
-void cmd_newlog(char *filename, int dummydata)
+void cmd_newlog(const char *filename, int dummydata)
 {
 	open_db(filename);
 	create_example_db(dummydata);
