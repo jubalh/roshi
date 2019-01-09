@@ -21,6 +21,7 @@ enum SESSION_FIELDS {
 
 // Nr of EXIERCISE_FIELDS
 #define MAX_E_ENUM_FIELDS 10
+
 // Enum to access the readline buffer for the exercise
 enum EXERCISE_FIELDS {
 	EXNAME = 0,
@@ -41,10 +42,10 @@ char * session_name_generator(const char *text, int state)
 
 	// first call
 	if (!state) {
-		char query[256]; //TODO: security check. if proposed session name is longer..
+		char query[4096];
 		query[0] = '\0';
 
-		sprintf(query, "SELECT Sessions.Name FROM Sessions WHERE Sessions.Name LIKE '%s%%'", text);
+		snprintf(query, 4095,  "SELECT Sessions.Name FROM Sessions WHERE Sessions.Name LIKE '%s%%'", text);
 
 		int rc = sqlite3_prepare_v2(g_db, query, -1, &stmt, NULL );
 		if( rc!=SQLITE_OK )
