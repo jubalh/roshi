@@ -36,7 +36,7 @@ enum EXERCISE_FIELDS {
 	EXSTATION,
 };
 
-char * session_name_generator(const char *text, int state)
+char * generic_generator(const char *text, int state, const char *col)
 {
 	static sqlite3_stmt *stmt = NULL;
 
@@ -45,7 +45,7 @@ char * session_name_generator(const char *text, int state)
 		char query[4096];
 		query[0] = '\0';
 
-		snprintf(query, 4095,  "SELECT Sessions.Name FROM Sessions WHERE Sessions.Name LIKE '%s%%'", text);
+		snprintf(query, 4095,  "SELECT %s FROM Sessions WHERE %s LIKE '%s%%'", col, col, text);
 
 		int rc = sqlite3_prepare_v2(g_db, query, -1, &stmt, NULL );
 		if( rc!=SQLITE_OK )
@@ -64,16 +64,32 @@ char * session_name_generator(const char *text, int state)
 	return NULL;
 }
 
+char * session_name_generator(const char *text, int state)
+{
+	return generic_generator(text, state, "Sessions.Name");
+}
+
+char * session_place_generator(const char *text, int state)
+{
+	return generic_generator(text, state, "Sessions.Place");
+}
+
 char ** cmd_add_completion_none(const char *text, int start, int end)
 {
 	rl_attempted_completion_over = 1;
 	return NULL;
 }
 
-char ** cmd_add_completion_session(const char *text, int start, int end)
+char ** cmd_add_completion_session_name(const char *text, int start, int end)
 {
 	rl_attempted_completion_over = 1;
 	return rl_completion_matches(text, session_name_generator);
+}
+
+char ** cmd_add_completion_session_place(const char *text, int start, int end)
+{
+	rl_attempted_completion_over = 1;
+	return rl_completion_matches(text, session_place_generator);
 }
 
 int readline_time_template_hook(void) {
@@ -117,12 +133,13 @@ void cmd_add(const char *filename)
 	printf("-----------------------\n");
 
 	open_db(filename);
-	rl_attempted_completion_function = cmd_add_completion_session;
+	rl_attempted_completion_function = cmd_add_completion_session_name;
 
 	// collect session info
 	bs[SNAME] = readline("Session name: ");
-	rl_attempted_completion_function = cmd_add_completion_none;
+	rl_attempted_completion_function = cmd_add_completion_session_place;
 	bs[SPLACE] = readline("Place: ");
+	rl_attempted_completion_function = cmd_add_completion_none;
 
 	rl_startup_hook = readline_date_template_hook;
 	bs[SDATE] = readline("Date: ");
