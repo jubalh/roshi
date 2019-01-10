@@ -122,6 +122,10 @@ int readline_warmup_template_hook(void) {
 	return rl_insert_text("no");
 }
 
+int readline_feeling_template_hook(void) {
+	return rl_insert_text("0");
+}
+
 void cmd_add(const char *filename)
 {
 	char *bs[MAX_S_ENUM_FIELDS];
@@ -149,7 +153,10 @@ void cmd_add(const char *filename)
 	rl_startup_hook = NULL;
 
 	bs[SNOTES] = readline("Notes: ");
-	bs[SFEELING] = readline("Feeling: ");
+
+	rl_startup_hook = readline_feeling_template_hook;
+	bs[SFEELING] = readline("Feeling (-2 to 2): ");
+	rl_startup_hook = NULL;
 
 	// submit session
 	char query[4096];
