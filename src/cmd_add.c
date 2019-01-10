@@ -82,13 +82,21 @@ char ** cmd_add_completion_none(const char *text, int start, int end)
 
 char ** cmd_add_completion_session_name(const char *text, int start, int end)
 {
+	// no default completion
 	rl_attempted_completion_over = 1;
+	// dont add space after completion
+	rl_completion_append_character = '\0';
+
 	return rl_completion_matches(text, session_name_generator);
 }
 
 char ** cmd_add_completion_session_place(const char *text, int start, int end)
 {
+	// no default completion
 	rl_attempted_completion_over = 1;
+	// dont add space after completion
+	rl_completion_append_character = '\0';
+
 	return rl_completion_matches(text, session_place_generator);
 }
 
@@ -137,6 +145,7 @@ void cmd_add(const char *filename)
 	printf("-----------------------\n");
 
 	open_db(filename);
+
 	rl_attempted_completion_function = cmd_add_completion_session_name;
 
 	// collect session info
