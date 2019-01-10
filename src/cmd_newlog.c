@@ -8,25 +8,28 @@ static void create_example_db(int dummydata)
 {
 	char *szErrMsg;
 
-	#define BASIC_QUERIES 3
-	#define ALL_QUERIES  13
+	#define BASIC_QUERIES 4
+	#define ALL_QUERIES  14
 
 	char *query[] = { 
 		"CREATE TABLE `Sessions` ( `SessionId` INTEGER PRIMARY KEY, `Name` TEXT NOT NULL, `Place` TEXT, `Start` TEXT, `End` TEXT, `Note` TEXT, `Feeling` INTEGER )",
 
-		"CREATE TABLE `Exercises` ( `ExerciseId` PRIMARY KEY, `Name` TEXT NOT NULL, `Sets` INTEGER DEFAULT 1, `Reps` INTEGER DEFAULT 1, `Time` TEXT, `Rest` TEXT, `Weight` NUMERIC DEFAULT 0, `isWarmup` INTEGER DEFAULT 0, `Note` TEXT, `Tempo` TEXT, `Station` TEXT, `SessionId` INTEGER, FOREIGN KEY(`SessionId`) REFERENCES `Session`(`SessionId`) )",
+		"CREATE TABLE `Exercises` ( `ExerciseId` INTEGER PRIMARY KEY, `Name` TEXT NOT NULL, `Sets` INTEGER DEFAULT 1, `Reps` INTEGER DEFAULT 1, `Time` TEXT, `Rest` TEXT, `Weight` NUMERIC DEFAULT 0, `isWarmup` INTEGER DEFAULT 0, `Note` TEXT, `Tempo` TEXT, `Station` TEXT, `SessionId` INTEGER, FOREIGN KEY(`SessionId`) REFERENCES `Session`(`SessionId`) )",
 
-		"CREATE TABLE `Tags` ( `TagId` INTEGER PRIMARY KEY, `Name` TEXT NOT NULL, `ExerciseId` INTEGER, FOREIGN KEY(`ExerciseId`) REFERENCES `Exercises`(`ExerciseId`) )",
+		"CREATE TABLE `Tags` ( `TagId` INTEGER PRIMARY KEY, `Name` TEXT NOT NULL )",
+
+		"CREATE TABLE `ExercisesTags` ( `TagId` INTEGER NOT NULL, `ExerciseId` INTEGER NOT NULL, FOREIGN KEY(`TagId`) REFERENCES `Tags`(`TagId`), FOREIGN KEY('ExerciseId') REFERENCES `Exercises`(`ExerciseId`) )",
 
 		"INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Weightlifting', 'Leimen', '2018-05-23 11:00', '2018-05-23 12:00')",
 		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionId`) VALUES ('Squat', '5', '5', '80', '1')",
 		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionId`) VALUES ('Deadlift', '1', '1', '120', '1')",
-		"INSERT INTO `Tags` (`Name`, `ExerciseId`) VALUES ('PR', '2')",
+		"INSERT INTO `Tags` (`Name`) VALUES ('PR')",
+		"INSERT INTO `ExercisesTags` (`TagId`, `ExerciseId`) VALUES ('1','2')",
 		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionId`) VALUES ('Squat', '10', '10', '35', '1')",
 
 		"INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Weightlifting', 'Leimen', '2018-05-23 15:00', '2018-05-23 15:30')",
 		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionId`) VALUES ('Squat', '1', '1', '150', '2')",
-		"INSERT INTO `Tags` (`Name`, `ExerciseId`) VALUES ('PR', '4')",
+		"INSERT INTO `ExercisesTags` (`TagId`, `ExerciseId`) VALUES ('1','4')",
 
 		"INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Bodyweight', 'Sunnypark', '2018-05-24 09:00', '2018-05-24 09:30')",
 		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `SessionId`) VALUES ('Push-Ups', '2', '20', '3')"

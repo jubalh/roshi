@@ -134,7 +134,7 @@ void cmd_pr(const char *filename)
 
 	open_db(filename);
 
-	int rc = sqlite3_prepare_v2(g_db, "SELECT Exercises.Name, Exercises.Weight, Sessions.Start FROM Exercises INNER JOIN Tags ON Exercises.ExerciseId=Tags.ExerciseId INNER JOIN Sessions ON Sessions.SessionId=Exercises.SessionId ORDER BY Sessions.Start DESC", -1, &stmt, NULL );
+	int rc = sqlite3_prepare_v2(g_db, "SELECT e.Name, e.Weight, s.Start FROM Exercises e JOIN ExercisesTags et ON e.ExerciseId = et.ExerciseId JOIN Tags t ON t.TagId = et.TagId INNER JOIN Sessions s ON s.SessionId=e.SessionId WHERE t.name = 'PR' ORDER BY s.Start DESC;", -1, &stmt, NULL );
 	if( rc!=SQLITE_OK )
 	{
 		if (szErrMsg) {
