@@ -12,7 +12,7 @@ static void create_example_db(int dummydata)
 	#define ALL_QUERIES  13
 
 	char *query[] = { 
-		"CREATE TABLE `Sessions` ( `SessionId` INTEGER PRIMARY KEY, `Name` TEXT NOT NULL, `Place` TEXT, `Start` NUMERIC, `End` TEXT, `Note` TEXT, `Feeling` INTEGER )",
+		"CREATE TABLE `Sessions` ( `SessionId` INTEGER PRIMARY KEY, `Name` TEXT NOT NULL, `Place` TEXT, `Start` TEXT, `End` TEXT, `Note` TEXT, `Feeling` INTEGER )",
 
 		"CREATE TABLE `Exercises` ( `ExerciseId` PRIMARY KEY, `Name` TEXT NOT NULL, `Sets` INTEGER DEFAULT 1, `Reps` INTEGER DEFAULT 1, `Time` TEXT, `Rest` TEXT, `Weight` NUMERIC DEFAULT 0, `isWarmup` INTEGER DEFAULT 0, `Note` TEXT, `Tempo` TEXT, `Station` TEXT, `SessionId` INTEGER, FOREIGN KEY(`SessionId`) REFERENCES `Session`(`SessionId`) )",
 
