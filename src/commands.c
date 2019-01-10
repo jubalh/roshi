@@ -1,7 +1,8 @@
 // vim: noexpandtab:ts=4:sts=4:sw=4
 
 #include <stdlib.h> // exit()
-#include <readline/readline.h>
+#include <stdio.h> // printf()
+#include <string.h> // strcmp()
 #include "sql.h"
 
 void cmd_show(const char *filename, const char *session, int isindex)
