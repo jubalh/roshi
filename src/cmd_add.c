@@ -84,7 +84,7 @@ int readline_time_template_hook(void) {
 	tm_info = localtime(&t);
 
 	char buffer[12];
-	strftime(buffer, 12, "%H:%M:%S", tm_info);
+	strftime(buffer, 12, "%H:%M", tm_info);
 
 	return rl_insert_text(buffer);
 }
