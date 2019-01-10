@@ -152,36 +152,42 @@ void cmd_add(const char *filename)
 
 	// collect exercise info
 	printf("\nExercises:\n");
-	be[EXSTATION] = readline("Station: ");
-	be[EXNAME] = readline("Exercise name: ");
-	be[EXWEIGHT] = readline("Weight: ");
-	be[EXSETS] = readline("Sets: ");
-	be[EXREPS] = readline("Reps: ");
-	be[EXTIME] = readline("Time/Duration: ");
-	be[EXTEMPO] = readline("Tempo: ");
-	be[EXREST] = readline("Rest time: ");
-	rl_startup_hook = readline_warmup_template_hook;
-	be[EXISWARMUP] = readline("Warmup set: ");
-	rl_startup_hook = NULL;
-	be[EXNOTE] = readline("Notes: ");
 
-	// submit exercise
-	char *szErrMsg = 0;
-	snprintf(query, 4095, "INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionID`) VALUES ('%s', '%s', '%s', '%s', '%d')", be[EXNAME], be[EXSETS], be[EXREPS], be[EXWEIGHT], session_id);
-	if(SQLITE_OK != sqlite3_exec(g_db, query, NULL, 0, &szErrMsg))
+	be[EXNAME] = readline("Exercise name: ");
+	while (strcmp(be[EXNAME], "") != 0)
 	{
-		printf("SQL error: %s\n", szErrMsg);
-		sqlite3_free(szErrMsg);
+		be[EXSTATION] = readline("Station: ");
+		be[EXWEIGHT] = readline("Weight: ");
+		be[EXSETS] = readline("Sets: ");
+		be[EXREPS] = readline("Reps: ");
+		be[EXTIME] = readline("Time/Duration: ");
+		be[EXTEMPO] = readline("Tempo: ");
+		be[EXREST] = readline("Rest time: ");
+		rl_startup_hook = readline_warmup_template_hook;
+		be[EXISWARMUP] = readline("Warmup set: ");
+		rl_startup_hook = NULL;
+		be[EXNOTE] = readline("Notes: ");
+
+		// submit exercise
+		char *szErrMsg = 0;
+		snprintf(query, 4095, "INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionID`) VALUES ('%s', '%s', '%s', '%s', '%d')", be[EXNAME], be[EXSETS], be[EXREPS], be[EXWEIGHT], session_id);
+		if(SQLITE_OK != sqlite3_exec(g_db, query, NULL, 0, &szErrMsg))
+		{
+			printf("SQL error: %s\n", szErrMsg);
+			sqlite3_free(szErrMsg);
+		}
+
+		for (int i=0; i<MAX_E_ENUM_FIELDS; i++)
+		{
+			free(be[i]);
+		}
+		be[EXNAME] = readline("\nExercise name: ");
 	}
 
 	// cleanup
 	for (int i=0; i<MAX_S_ENUM_FIELDS; i++)
 	{
 		free(bs[i]);
-	}
-	for (int i=0; i<MAX_E_ENUM_FIELDS; i++)
-	{
-		free(be[i]);
 	}
 
 	close_db();
