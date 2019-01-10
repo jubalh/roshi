@@ -45,7 +45,7 @@ char * generic_generator(const char *text, int state, const char *col)
 		char query[4096];
 		query[0] = '\0';
 
-		snprintf(query, 4095,  "SELECT %s FROM Sessions WHERE %s LIKE '%s%%'", col, col, text);
+		snprintf(query, 4095,  "SELECT %s FROM Sessions WHERE %s LIKE '%s%%' GROUP BY %s", col, col, text, col);
 
 		int rc = sqlite3_prepare_v2(g_db, query, -1, &stmt, NULL );
 		if( rc!=SQLITE_OK )
