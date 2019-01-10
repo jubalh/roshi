@@ -34,6 +34,7 @@ enum EXERCISE_FIELDS {
 	EXNOTE,
 	EXTEMPO,
 	EXSTATION,
+	EXTAGS
 };
 
 char * generic_generator(const char *text, int state, const char *col)
@@ -200,6 +201,11 @@ void cmd_add(const char *filename)
 		be[EXISWARMUP] = readline("Warmup set: ");
 		rl_startup_hook = NULL;
 		be[EXNOTE] = readline("Notes: ");
+		be[EXTAGS] = readline("Tags: ");
+		// TODO add tags into db:
+		// 1) seperate by ',' strok()
+		// 2) insert correctly in second DB
+		// 3) add autocompletion
 
 		// submit exercise
 		char *szErrMsg = 0;
