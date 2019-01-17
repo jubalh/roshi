@@ -2,7 +2,7 @@
 
 #include <stdlib.h> // exit()
 #include <string.h> // strcmp()
-#include <stdio.h>
+#include <stdio.h> // printf()
 #include <unistd.h> // access(), getopt()
 #include "commands.h"
 
@@ -154,7 +154,20 @@ static int parse_analyze(int argc, char *argv[])
 		}
 	}
 
-	cmd_analyze(argv[0]);
+	if (argc >= 3)
+	{
+		if (strcmp(argv[2], "pr") == 0)
+		{
+			cmd_analyze_sub_pr(argv[0]);
+			return EXIT_SUCCESS;
+		} else if (strcmp(argv[2], "test1") == 0)
+		{
+			cmd_analyze_sub_test1(argv[0]);
+			return EXIT_SUCCESS;
+		}
+	}
+	cmd_analyze();
+	return EXIT_SUCCESS;
 }
 
 static int parse_pr(int argc, char *argv[])
