@@ -266,7 +266,7 @@ void cmd_add(const char *filename)
 			int rc = sqlite3_step(stmt_tag);
 			sqlite3_reset(stmt_tag);
 
-			if (rc == SQLITE_OK)
+			if (rc == SQLITE_OK || rc == SQLITE_DONE)
 			{
 				sqlite3_int64 tag_id = sqlite3_last_insert_rowid(g_db);
 
@@ -275,7 +275,10 @@ void cmd_add(const char *filename)
 				sqlite3_bind_int( stmt_tag_ex, id_strexid, exercise_id );
 				sqlite3_step(stmt_tag_ex);
 				sqlite3_reset(stmt_tag_ex);
+			} else {
+				fprintf(stderr, "Error in cmd_add(): add tags\n");
 			}
+
 
 			tag = strtok(NULL, ",");
 		}
