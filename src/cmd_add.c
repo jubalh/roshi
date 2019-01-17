@@ -223,7 +223,7 @@ void cmd_add(const char *filename)
 
 		sqlite3_prepare_v2(g_db, "INSERT INTO Tags (Name) SELECT :strtagname WHERE NOT EXISTS (SELECT TagId FROM Tags WHERE Name = :strtagname)", -1, &stmt_tag, NULL );
 
-		sqlite3_prepare_v2(g_db, "INSERT INTO ExercisesTags (TagId , ExerciseId VALUES(:strtagid, :strexid);", -1, &stmt_tag_ex, NULL );
+		sqlite3_prepare_v2(g_db, "INSERT INTO ExercisesTags (TagId, ExerciseId) VALUES(:strtagid, :strexid)", -1, &stmt_tag_ex, NULL );
 
 		int id_strtagname = sqlite3_bind_parameter_index(stmt_tag, ":strtagname");
 		int id_strtagid = sqlite3_bind_parameter_index(stmt_tag_ex, ":strtagid");
@@ -234,17 +234,20 @@ void cmd_add(const char *filename)
 			printf("found: %s\n", tag);
 
 			// insert new tag if not already present
-			// TODO: whats tag?
 			sqlite3_bind_text( stmt_tag, id_strtagname, tag, -1, SQLITE_STATIC );
-			sqlite3_step(stmt_tag);
+			int rc = sqlite3_step(stmt_tag);
 			sqlite3_reset(stmt_tag);
 
-			sqlite3_int64 tag_id = sqlite3_last_insert_rowid(g_db);
+			if (rc == SQLITE_OK)
+			{
+				sqlite3_int64 tag_id = sqlite3_last_insert_rowid(g_db);
 
-			sqlite3_bind_int( stmt_tag_ex, id_strtagid, tag_id );
-			sqlite3_bind_int( stmt_tag_ex, id_strexid, exercise_id );
-			sqlite3_step(stmt_tag_ex);
-			sqlite3_reset(stmt_tag_ex);
+				// insert tag to exercise connection into ExerciseTags
+				sqlite3_bind_int( stmt_tag_ex, id_strtagid, tag_id );
+				sqlite3_bind_int( stmt_tag_ex, id_strexid, exercise_id );
+				sqlite3_step(stmt_tag_ex);
+				sqlite3_reset(stmt_tag_ex);
+			}
 
 			tag = strtok(NULL, ",");
 		}
