@@ -221,9 +221,9 @@ void cmd_add(const char *filename)
 		sqlite3_stmt *stmt_tag= NULL;
 		sqlite3_stmt *stmt_tag_ex = NULL;
 
-		sqlite3_prepare_v2(g_db, "INSERT INTO Tags (Name) SELECT ':strtagname' WHERE NOT EXISTS (SELECT TagId FROM Tags WHERE Name = ':strtagname')", -1, &stmt_tag, NULL );
+		sqlite3_prepare_v2(g_db, "INSERT INTO Tags (Name) SELECT :strtagname WHERE NOT EXISTS (SELECT TagId FROM Tags WHERE Name = :strtagname)", -1, &stmt_tag, NULL );
 
-		sqlite3_prepare_v2(g_db, "INSERT INTO ExercisesTags (TagId , ExerciseId VALUES(':strtagid', ':strexid');", -1, &stmt_tag_ex, NULL );
+		sqlite3_prepare_v2(g_db, "INSERT INTO ExercisesTags (TagId , ExerciseId VALUES(:strtagid, :strexid);", -1, &stmt_tag_ex, NULL );
 
 		int id_strtagname = sqlite3_bind_parameter_index(stmt_tag, ":strtagname");
 		int id_strtagid = sqlite3_bind_parameter_index(stmt_tag_ex, ":strtagid");
