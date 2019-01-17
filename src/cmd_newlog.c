@@ -27,7 +27,7 @@ static void create_example_db(int dummydata)
 		"INSERT INTO `ExercisesTags` (`TagId`, `ExerciseId`) VALUES ('1','2')",
 		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionId`) VALUES ('Squat', '10', '10', '35', '1')",
 
-		"INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Weightlifting', 'Leimen', '2018-05-23 15:00', '2018-05-23 15:30')",
+		"INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Weightlifting', 'Leimen', '2018-06-23 15:00', '2018-05-23 15:30')",
 		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionId`) VALUES ('Squat', '1', '1', '150', '2')",
 		"INSERT INTO `ExercisesTags` (`TagId`, `ExerciseId`) VALUES ('1','4')",
 

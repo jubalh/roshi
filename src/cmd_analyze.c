@@ -9,7 +9,7 @@
 #define TMPDIR "/tmp/roshi/"
 #define TMPFILE TMPDIR"f1.data"
 
-static void callback(FILE *fp, sqlite3_stmt *stmt)
+static void generic_two_data_callback(FILE *fp, sqlite3_stmt *stmt)
 {
 	fputs("# reps, weight\n", fp);
 	const char *reps = NULL;
@@ -57,9 +57,19 @@ static void cmd_analyze_generic(const char* filename, const char* query, void (*
 	system(call);
 }
 
-void cmd_analyze(const char* filename)
+static void cmd_analyze_(const char* filename)
 {
 	static char* gpcall = "gnuplot -e \"set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2 pointtype 7 pointsize 1.5; set xlabel 'reps'; set ylabel 'weight'; plot '/tmp/roshi/f1.data' with linespoints linestyle 1; pause -1\"";
 
-	cmd_analyze_generic(filename, "SELECT Exercises.Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = 'Weightlifting'", &callback, gpcall);
+	cmd_analyze_generic(filename, "SELECT Exercises.Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = 'Weightlifting'", &generic_two_data_callback, gpcall);
+}
+
+void cmd_analyze(const char* filename)
+{
+	static char* gpcall = "gnuplot -e \"set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2 pointtype 7 pointsize 1.5; set xlabel 'date'; set xdata time; set timefmt '%Y-%m-%d'; set ylabel 'weight'; plot '/tmp/roshi/f1.data' using 1:3 with linespoints linestyle 1; pause -1\"";
+
+	cmd_analyze_generic(filename,
+			"SELECT s.Start, e.Weight FROM Exercises e JOIN ExercisesTags et ON e.ExerciseId = et.ExerciseId JOIN Tags t ON t.TagId = et.TagId INNER JOIN Sessions s ON s.SessionId=e.SessionId WHERE t.name = 'PR' ORDER BY s.Start DESC;"
+			,&generic_two_data_callback,
+			gpcall);
 }
