@@ -237,12 +237,14 @@ void cmd_add(const char *filename)
 			// TODO: whats tag?
 			sqlite3_bind_text( stmt_tag, id_strtagname, tag, -1, SQLITE_STATIC );
 			sqlite3_step(stmt_tag);
+			sqlite3_reset(stmt_tag);
 
 			sqlite3_int64 tag_id = sqlite3_last_insert_rowid(g_db);
 
 			sqlite3_bind_int( stmt_tag_ex, id_strtagid, tag_id );
 			sqlite3_bind_int( stmt_tag_ex, id_strexid, exercise_id );
 			sqlite3_step(stmt_tag_ex);
+			sqlite3_reset(stmt_tag_ex);
 
 			tag = strtok(NULL, ",");
 		}
