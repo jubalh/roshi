@@ -261,8 +261,6 @@ void cmd_add(const char *filename)
 
 		char *tag = strtok(be[EXTAGS], ",");
 		while(tag != NULL) {
-			printf("found: %s\n", tag);
-
 			// insert new tag if not already present
 			sqlite3_bind_text( stmt_tag, id_strtagname, tag, -1, SQLITE_STATIC );
 			int rc = sqlite3_step(stmt_tag);
