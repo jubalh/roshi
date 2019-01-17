@@ -20,7 +20,7 @@ enum SESSION_FIELDS {
 };
 
 // Nr of EXIERCISE_FIELDS
-#define MAX_E_ENUM_FIELDS 10
+#define MAX_E_ENUM_FIELDS 11
 
 // Enum to access the readline buffer for the exercise
 enum EXERCISE_FIELDS {
@@ -215,6 +215,40 @@ void cmd_add(const char *filename)
 			printf("SQL error: %s\n", szErrMsg);
 			sqlite3_free(szErrMsg);
 		}
+
+		sqlite3_int64 exercise_id = sqlite3_last_insert_rowid(g_db);
+
+		sqlite3_stmt *stmt_tag= NULL;
+		sqlite3_stmt *stmt_tag_ex = NULL;
+
+		sqlite3_prepare_v2(g_db, "INSERT INTO Tags (Name) SELECT ':strtagname' WHERE NOT EXISTS (SELECT TagId FROM Tags WHERE Name = ':strtagname')", -1, &stmt_tag, NULL );
+
+		sqlite3_prepare_v2(g_db, "INSERT INTO ExercisesTags (TagId , ExerciseId VALUES(':strtagid', ':strexid');", -1, &stmt_tag_ex, NULL );
+
+		int id_strtagname = sqlite3_bind_parameter_index(stmt_tag, ":strtagname");
+		int id_strtagid = sqlite3_bind_parameter_index(stmt_tag_ex, ":strtagid");
+		int id_strexid = sqlite3_bind_parameter_index(stmt_tag_ex, ":strexid");
+
+		char *tag = strtok(be[EXTAGS], ",");
+		while(tag != NULL) {
+			printf("found: %s\n", tag);
+
+			// insert new tag if not already present
+			// TODO: whats tag?
+			sqlite3_bind_text( stmt_tag, id_strtagname, tag, -1, SQLITE_STATIC );
+			sqlite3_step(stmt_tag);
+
+			sqlite3_int64 tag_id = sqlite3_last_insert_rowid(g_db);
+
+			sqlite3_bind_int( stmt_tag_ex, id_strtagid, tag_id );
+			sqlite3_bind_int( stmt_tag_ex, id_strexid, exercise_id );
+			sqlite3_step(stmt_tag_ex);
+
+			tag = strtok(NULL, ",");
+		}
+
+		sqlite3_finalize(stmt_tag);
+		sqlite3_finalize(stmt_tag_ex);
 
 		for (int i=0; i<MAX_E_ENUM_FIELDS; i++)
 		{
