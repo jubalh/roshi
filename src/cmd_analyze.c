@@ -9,8 +9,20 @@
 #define TMPDIR "/tmp/roshi/"
 #define TMPFILE TMPDIR"f1.data"
 
-FILE* _get_fh(const char *fullfilename)
+void cmd_analyze(const char *filename)
 {
+	sqlite3_stmt *stmt = NULL;
+
+	open_db(filename);
+
+	int rc = sqlite3_prepare_v2(g_db, "SELECT Exercises.Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = 'Weightlifting';", -1, &stmt, NULL );
+	if( rc!=SQLITE_OK )
+	{
+		printf("SQL error: cmd_analzye\n");
+		close_db();
+		exit(1);
+	}
+
 	if (access(TMPDIR, F_OK) < 0)
 	{
 		int ret = mkdir(TMPDIR, S_IRUSR | S_IWUSR | S_IXUSR);
@@ -19,38 +31,9 @@ FILE* _get_fh(const char *fullfilename)
 	}
 
 	FILE *fp;
-	fp = fopen(fullfilename, "w+");
+	fp = fopen(TMPFILE, "w+");
 	if (fp == NULL)
 		exit(2);
-
-	return fp;
-}
-
-// IMPORTANT: Since it uses open_db() this should only be called once per analyze call!
-// It's just a helper function so we have less code in various analzye calls.
-static sqlite3_stmt* _get_stmt(const char *filename, const char *query)
-{
-	open_db(filename);
-
-	sqlite3_stmt *stmt = NULL;
-
-	int rc = sqlite3_prepare_v2(g_db, query, -1, &stmt, NULL );
-
-	if( rc!=SQLITE_OK )
-	{
-		printf("SQL error: cmd_analzye\n");
-		close_db();
-		exit(1);
-	}
-
-	return stmt;
-}
-
-void cmd_analyze(const char *filename)
-{
-	sqlite3_stmt *stmt = _get_stmt(filename, "SELECT Exercises.Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = 'Weightlifting'");
-
-	FILE *fp = _get_fh(TMPFILE);
 
 	fputs("# reps, weight\n", fp);
 	const char *reps = NULL;
@@ -63,6 +46,7 @@ void cmd_analyze(const char *filename)
 
 	sqlite3_finalize(stmt);
 	close_db();
+
 	fclose(fp);
 	
 	static char * call = "gnuplot -e \"set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2 pointtype 7 pointsize 1.5; set xlabel 'reps'; set ylabel 'weight'; plot '/tmp/roshi/f1.data' with linespoints linestyle 1; pause -1\"";
