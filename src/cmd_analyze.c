@@ -9,13 +9,25 @@
 #define TMPDIR "/tmp/roshi/"
 #define TMPFILE TMPDIR"f1.data"
 
-void cmd_analyze(const char *filename)
+static void callback(FILE *fp, sqlite3_stmt *stmt)
+{
+	fputs("# reps, weight\n", fp);
+	const char *reps = NULL;
+	const char *weight = NULL;
+	while( sqlite3_step(stmt) == SQLITE_ROW ) {
+		reps = (const char*)sqlite3_column_text( stmt, 0 );
+		weight = (const char*)sqlite3_column_text( stmt, 1 );
+		fprintf(fp, "%s %s\n", reps, weight);
+	}
+}
+
+static void cmd_analyze_generic(const char* filename, const char* query, void (*data_cb)(FILE*, sqlite3_stmt*), const char* call)
 {
 	sqlite3_stmt *stmt = NULL;
 
 	open_db(filename);
 
-	int rc = sqlite3_prepare_v2(g_db, "SELECT Exercises.Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = 'Weightlifting';", -1, &stmt, NULL );
+	int rc = sqlite3_prepare_v2(g_db, query, -1, &stmt, NULL );
 	if( rc!=SQLITE_OK )
 	{
 		printf("SQL error: cmd_analzye\n");
@@ -35,21 +47,19 @@ void cmd_analyze(const char *filename)
 	if (fp == NULL)
 		exit(2);
 
-	fputs("# reps, weight\n", fp);
-	const char *reps = NULL;
-	const char *weight = NULL;
-	while( sqlite3_step(stmt) == SQLITE_ROW ) {
-		reps = (const char*)sqlite3_column_text( stmt, 0 );
-		weight = (const char*)sqlite3_column_text( stmt, 1 );
-		fprintf(fp, "%s %s\n", reps, weight);
-	}
+	data_cb(fp, stmt);
 
 	sqlite3_finalize(stmt);
 	close_db();
 
 	fclose(fp);
 	
-	static char * call = "gnuplot -e \"set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2 pointtype 7 pointsize 1.5; set xlabel 'reps'; set ylabel 'weight'; plot '/tmp/roshi/f1.data' with linespoints linestyle 1; pause -1\"";
-
 	system(call);
+}
+
+void cmd_analyze(const char* filename)
+{
+	static char* gpcall = "gnuplot -e \"set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2 pointtype 7 pointsize 1.5; set xlabel 'reps'; set ylabel 'weight'; plot '/tmp/roshi/f1.data' with linespoints linestyle 1; pause -1\"";
+
+	cmd_analyze_generic(filename, "SELECT Exercises.Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = 'Weightlifting'", &callback, gpcall);
 }
