@@ -1,6 +1,6 @@
 # vim: noexpandtab:ts=4:sts=4:sw=4
 
-src = src/main.c src/sql.c src/commands.c src/cmd_newlog.c src/cmd_add.c src/options.c
+src = src/main.c src/sql.c src/commands.c src/cmd_newlog.c src/cmd_add.c src/options.c src/cmd_analyze.c
 
 STR_SUCCESS = \e[1;32mSUCCESS\e[0m
 STR_FAIL = \e[1;31mFAIL\e[0m
