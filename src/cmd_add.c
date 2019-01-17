@@ -37,7 +37,7 @@ enum EXERCISE_FIELDS {
 	EXTAGS
 };
 
-char * generic_generator(const char *text, int state, const char *col)
+char * generic_generator(const char *table, const char *text, int state, const char *col)
 {
 	static sqlite3_stmt *stmt = NULL;
 
@@ -46,7 +46,7 @@ char * generic_generator(const char *text, int state, const char *col)
 		char query[4096];
 		query[0] = '\0';
 
-		snprintf(query, 4095,  "SELECT %s FROM Sessions WHERE %s LIKE '%s%%' GROUP BY %s", col, col, text, col);
+		snprintf(query, 4095,  "SELECT %s FROM %s WHERE %s LIKE '%s%%' GROUP BY %s", col, table, col, text, col);
 
 		int rc = sqlite3_prepare_v2(g_db, query, -1, &stmt, NULL );
 		if( rc!=SQLITE_OK )
@@ -67,12 +67,17 @@ char * generic_generator(const char *text, int state, const char *col)
 
 char * session_name_generator(const char *text, int state)
 {
-	return generic_generator(text, state, "Sessions.Name");
+	return generic_generator("Sessions", text, state, "Sessions.Name");
 }
 
 char * session_place_generator(const char *text, int state)
 {
-	return generic_generator(text, state, "Sessions.Place");
+	return generic_generator("Sessions", text, state, "Sessions.Place");
+}
+
+char * exercise_tag_generator(const char *text, int state)
+{
+	return generic_generator("Tags", text, state, "Tags.Name");
 }
 
 char ** cmd_add_completion_none(const char *text, int start, int end)
@@ -99,6 +104,16 @@ char ** cmd_add_completion_session_place(const char *text, int start, int end)
 	rl_completion_append_character = '\0';
 
 	return rl_completion_matches(text, session_place_generator);
+}
+
+char ** cmd_add_completion_exercise_tag(const char *text, int start, int end)
+{
+	// no default completion
+	rl_attempted_completion_over = 1;
+	// dont add space after completion
+	rl_completion_append_character = '\0';
+
+	return rl_completion_matches(text, exercise_tag_generator);
 }
 
 int readline_time_template_hook(void) {
@@ -201,11 +216,9 @@ void cmd_add(const char *filename)
 		be[EXISWARMUP] = readline("Warmup set: ");
 		rl_startup_hook = NULL;
 		be[EXNOTE] = readline("Notes: ");
+		rl_attempted_completion_function = cmd_add_completion_exercise_tag;
 		be[EXTAGS] = readline("Tags: ");
-		// TODO add tags into db:
-		// 1) seperate by ',' strok()
-		// 2) insert correctly in second DB
-		// 3) add autocompletion
+		rl_attempted_completion_function = cmd_add_completion_none;
 
 		// submit exercise
 		char *szErrMsg = 0;
