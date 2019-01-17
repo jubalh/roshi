@@ -80,6 +80,11 @@ char * exercise_tag_generator(const char *text, int state)
 	return generic_generator("Tags", text, state, "Tags.Name");
 }
 
+char * exercise_name_generator(const char *text, int state)
+{
+	return generic_generator("Exercises", text, state, "Exercises.Name");
+}
+
 char ** cmd_add_completion_none(const char *text, int start, int end)
 {
 	rl_attempted_completion_over = 1;
@@ -114,6 +119,16 @@ char ** cmd_add_completion_exercise_tag(const char *text, int start, int end)
 	rl_completion_append_character = '\0';
 
 	return rl_completion_matches(text, exercise_tag_generator);
+}
+
+char ** cmd_add_completion_exercise_name(const char *text, int start, int end)
+{
+	// no default completion
+	rl_attempted_completion_over = 1;
+	// dont add space after completion
+	rl_completion_append_character = '\0';
+
+	return rl_completion_matches(text, exercise_name_generator);
 }
 
 int readline_time_template_hook(void) {
@@ -202,7 +217,9 @@ void cmd_add(const char *filename)
 	// collect exercise info
 	printf("\nExercises:\n");
 
+	rl_attempted_completion_function = cmd_add_completion_exercise_name;
 	be[EXNAME] = readline("Exercise name: ");
+	rl_attempted_completion_function = cmd_add_completion_none;
 	while (strcmp(be[EXNAME], "") != 0)
 	{
 		be[EXSTATION] = readline("Station: ");
@@ -272,7 +289,9 @@ void cmd_add(const char *filename)
 		{
 			free(be[i]);
 		}
+		rl_attempted_completion_function = cmd_add_completion_exercise_name;
 		be[EXNAME] = readline("\nExercise name: ");
+		rl_attempted_completion_function = cmd_add_completion_none;
 	}
 
 	// cleanup
