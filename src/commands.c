@@ -8,7 +8,6 @@
 void cmd_show(const char *filename, const char *session, int isindex)
 {
 	int rc;
-	char *szErrMsg = 0;
 	sqlite3_stmt *stmt = NULL;
 
 	open_db(filename);
@@ -16,20 +15,15 @@ void cmd_show(const char *filename, const char *session, int isindex)
 	if (isindex)
 	{
 		// search for index
-		sqlite3_prepare_v2(g_db, "SELECT Exercises.Name, Sets, Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.SessionId = :str;", -1, &stmt, NULL );
+		rc = sqlite3_prepare_v2(g_db, "SELECT Exercises.Name, Sets, Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.SessionId = :str;", -1, &stmt, NULL );
 	} else {
 		// search for session name
-		sqlite3_prepare_v2(g_db, "SELECT Exercises.Name, Sets, Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = :str;", -1, &stmt, NULL );
+		rc = sqlite3_prepare_v2(g_db, "SELECT Exercises.Name, Sets, Reps, Weight FROM Exercises INNER JOIN Sessions ON Exercises.SessionId=Sessions.SessionId WHERE Sessions.Name = :str;", -1, &stmt, NULL );
 	}
 
 	if( rc!=SQLITE_OK )
 	{
-		if (szErrMsg) {
-			printf("SQL error: %s\n", szErrMsg);
-			sqlite3_free(szErrMsg);
-		} else {
-			printf("SQL error: %s\n", szErrMsg);
-		}
+		printf("SQL error: cmd_show, code %d\n", rc);
 		close_db();
 		exit(1);
 	}
@@ -62,7 +56,6 @@ void cmd_show(const char *filename, const char *session, int isindex)
 
 void cmd_list(const char *filename)
 {
-	char *szErrMsg = 0;
 	sqlite3_stmt *stmt = NULL;
 
 	open_db(filename);
@@ -70,12 +63,7 @@ void cmd_list(const char *filename)
 	int rc = sqlite3_prepare_v2(g_db, "SELECT SessionID, Name from Sessions;", -1, &stmt, NULL );
 	if( rc!=SQLITE_OK )
 	{
-		if (szErrMsg) {
-			printf("SQL error: %s\n", szErrMsg);
-			sqlite3_free(szErrMsg);
-		} else {
-			printf("SQL error: %s\n", szErrMsg);
-		}
+		printf("SQL error: cmd_list, code %d\n", rc);
 		close_db();
 		exit(1);
 	}
@@ -97,7 +85,6 @@ void cmd_list(const char *filename)
 
 void cmd_pr(const char *filename)
 {
-	char *szErrMsg = 0;
 	sqlite3_stmt *stmt = NULL;
 
 	open_db(filename);
@@ -105,12 +92,7 @@ void cmd_pr(const char *filename)
 	int rc = sqlite3_prepare_v2(g_db, "SELECT e.Name, e.Weight, s.Start FROM Exercises e JOIN ExercisesTags et ON e.ExerciseId = et.ExerciseId JOIN Tags t ON t.TagId = et.TagId INNER JOIN Sessions s ON s.SessionId=e.SessionId WHERE t.name = 'PR' ORDER BY s.Start DESC;", -1, &stmt, NULL );
 	if( rc!=SQLITE_OK )
 	{
-		if (szErrMsg) {
-			printf("SQL error: %s\n", szErrMsg);
-			sqlite3_free(szErrMsg);
-		} else {
-			printf("SQL error: %s\n", szErrMsg);
-		}
+		printf("SQL error: cmd_list, code %d\n", rc);
 		close_db();
 		exit(1);
 	}
