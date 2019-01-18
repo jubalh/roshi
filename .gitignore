@@ -1,3 +1,4 @@
 roshi
 *.db
 *.o
+build/

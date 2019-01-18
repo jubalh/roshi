@@ -7,7 +7,7 @@ STR_FAIL = \e[1;31mFAIL\e[0m
 
 roshi: $(src) clean
 	if [ -e .git/HEAD ]; then \
-		gcc -g -o roshi $(src) -lsqlite3 -lreadline -DGIT_REV='"$(shell git log --pretty=format:'%h' -n 1)"'; \
+		gcc -g -o roshi $(src) -Wall -pedantic -Wextra -lsqlite3 -lreadline -DGIT_REV='"$(shell git log --pretty=format:'%h' -n 1)"'; \
 	else \
 		gcc -g -o roshi $(src) -lsqlite3 -lreadline; \
 	fi
