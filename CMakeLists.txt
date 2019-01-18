@@ -41,3 +41,15 @@ endif()
 add_executable (roshi ${SRC})
 
 target_link_libraries (roshi sqlite3 readline)
+
+install(TARGETS
+	roshi
+	DESTINATION
+	bin
+)
+
+install(FILES
+	roshi.1
+	DESTINATION
+	man
+)
