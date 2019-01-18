@@ -39,6 +39,7 @@ static int parse_newlog(int argc, char *argv[])
 	}
 
 	cmd_newlog(argv[0], dummydata);
+	return EXIT_SUCCESS;
 }
 
 static void display_help_show()
@@ -86,6 +87,8 @@ static int parse_show(int argc, char *argv[])
 	} else {
 		cmd_show(argv[0], session_search, 1);
 	}
+
+	return EXIT_SUCCESS;
 }
 
 static int parse_add(int argc, char *argv[])
@@ -109,6 +112,7 @@ static int parse_add(int argc, char *argv[])
 	}
 
 	cmd_add(argv[0]);
+	return EXIT_SUCCESS;
 }
 
 static int parse_list(int argc, char *argv[])
@@ -132,6 +136,7 @@ static int parse_list(int argc, char *argv[])
 	}
 
 	cmd_list(argv[0]);
+	return EXIT_SUCCESS;
 }
 
 static int parse_analyze(int argc, char *argv[])
@@ -191,6 +196,7 @@ static int parse_pr(int argc, char *argv[])
 	}
 
 	cmd_pr(argv[0]);
+	return EXIT_SUCCESS;
 }
 
 int parse_options(int argc, char *argv[])
@@ -207,15 +213,15 @@ int parse_options(int argc, char *argv[])
 
 		if (strcmp(argv[1], "show") == 0)
 		{
-			parse_show(argc, argv);
+			return parse_show(argc, argv);
 		} else if (strcmp(argv[1], "add") == 0) {
-			parse_add(argc, argv);
+			return parse_add(argc, argv);
 		} else if (strcmp(argv[1], "list") == 0) {
-			parse_list(argc, argv);
+			return parse_list(argc, argv);
 		} else if (strcmp(argv[1], "analyze") == 0) {
-			parse_analyze(argc, argv);
+			return parse_analyze(argc, argv);
 		} else if (strcmp(argv[1], "pr") == 0) {
-			parse_pr(argc, argv);
+			return parse_pr(argc, argv);
 		} else {
 			return EXIT_FAILURE;
 		}
