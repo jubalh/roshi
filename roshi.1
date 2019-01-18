@@ -1,0 +1,54 @@
+.\" Manpage for roshi. Started 2019-01-18 by Michael Vetter.
+.TH man 1  "18 January 2019" "version 0.0" "USER COMMANDS"
+.SH NAME
+roshi \- commandline workout session logger
+.SH SYNOPSIS
+.B roshi
+[\-h] [\-d device] \-s speed
+.SH DESCRIPTION
+roshi is a commandline workout session logger.
+It tracks your workouts in a a sqlite3 database file called workoutlog.
+There should be one file per user, like having a physical note book per trainee.
+.PP
+The first argument should always be the name of the workoutlog. Followed by the subcommand.
+.SH SUBCOMMANDS
+.SS newlog
+.TP
+create a new workoutlog.
+.TP
+\-h
+display a short help text.
+.TP
+\-e
+fill workout log with sample data.
+.SS add
+.TP
+add a new session to the workoutlog.
+.SS list
+.TP
+list logged sessions.
+.SS show
+.TP
+show the exercises in a session.
+.TP
+\-i
+lookup based on index instead of session name. Index can be retrieved via
+.B
+list.
+.SH EXAMPLES
+.TP
+Create new workoutlog for trainee 'Charles' that already contains some sample data
+.B roshi
+charles.log newlog
+.PP
+.TP
+List logged sessions for 'Charles'
+.B roshi
+list
+.PP
+.SH EXIT STATUS
+roshi returns a zero exist status if all goes well.
+.SH AUTHOR
+Michael Vetter (jubalh@iodoru.org)
+.SH SEE ALSO
+gnuplot(1)
