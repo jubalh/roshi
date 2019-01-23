@@ -53,3 +53,7 @@ install(FILES
 	DESTINATION
 	man
 )
+
+enable_testing()
+add_test( maintest ../test.py )
+
