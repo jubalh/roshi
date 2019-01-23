@@ -10,8 +10,20 @@ ROSHI = '../roshi'
 DBNAME = 'test.db'
 SQL_DUMP = 'sql1.is'
 
+FNULL = open(os.devnull, 'w')
+
+def remove(file):
+	if os.path.isfile(file):
+		os.remove(file)
+
 def check_binaries():
+	status, result = subprocess.getstatusoutput(ROSHI)
+	if status != 0:
+		print('\033[31mFAILURE\033[37m Make sure to have roshi compiled')
+		sys.exit(1)
+
 	binaries = ["diff", "sqlite3"]
+
 	for b in binaries:
 		status, result = subprocess.getstatusoutput(b + " --version")
 		if status != 0:
@@ -20,19 +32,15 @@ def check_binaries():
 
 def test_newlog():
 	#ROSHI NEWLOG
-	try:
-		subprocess.run([ROSHI, DBNAME, 'newlog', '-e'])
-	except:
-		print('\033[31mFAILURE\033[37m Make sure to have roshi compiled')
-		sys.exit(1)
+	subprocess.run([ROSHI, DBNAME, 'newlog', '-e'], stdout=FNULL, stderr=subprocess.STDOUT)
 
 	os.system("sqlite3 -line " + DBNAME + " 'select * from Exercises;' > " + SQL_DUMP)
 
 	ret = os.system('diff expected_result_1 ' + SQL_DUMP)
 	if ret == 0:
-		print('Newlog: \033[32mSUCCESS\033[37m')
+		print('newlog: \033[32mSUCCESS\033[37m')
 	else:
-		print('Newlog: \033[31mFAILURE\033[37m')
+		print('newlog: \033[31mFAILURE\033[37m')
 
 def test_add():
 	#ROSHI ADD
@@ -127,9 +135,9 @@ def test_add():
 		child.sendline('tag1,tag2,tag3')
 		child.expect('Exercise name: ')
 		child.sendline('')
-		print('Add: \033[32mSUCCESS\033[37m')
+		print('add: \033[32mSUCCESS\033[37m')
 	except (EOF,TIMEOUT) as e:
-		print('Add: \033[31mFAILURE\033[37m')
+		print('add: \033[31mFAILURE\033[37m')
 		print(e)
 
 	if child.isalive():
@@ -137,7 +145,14 @@ def test_add():
 
 if __name__ == "__main__":
 	check_binaries()
-	test_newlog()
-	test_add()
-	os.remove(DBNAME)
-	os.remove(SQL_DUMP)
+	if len(sys.argv) > 1:
+		if sys.argv[1] == "newlog":
+			test_newlog()
+			print("Running test: newlog")
+		sys.exit(0)
+	else:
+		print("Running all tests..")
+		test_newlog()
+		test_add()
+		remove(DBNAME)
+		remove(SQL_DUMP)
