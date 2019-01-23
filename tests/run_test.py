@@ -6,7 +6,6 @@ import subprocess
 import os
 import sys
 
-ROSHI = '../roshi'
 DBNAME = 'test.db'
 SQL_DUMP = 'sql1.is'
 
@@ -144,7 +143,15 @@ def test_add():
 		child.close()
 
 if __name__ == "__main__":
+	# in case we run with CMake
+	if len(sys.argv) > 2:
+		ROSHI = sys.argv[2] + '/roshi'
+	# in case we run manually
+	else:
+		ROSHI = '../roshi'
+
 	check_binaries()
+
 	if len(sys.argv) > 1:
 		if sys.argv[1] == "newlog":
 			print("Running test: newlog")
@@ -156,8 +163,6 @@ if __name__ == "__main__":
 		else:
 			print("No such test available")
 			sys.exit(1)
-
-		sys.exit(0)
 	else:
 		print("Running all tests..")
 		test_newlog()

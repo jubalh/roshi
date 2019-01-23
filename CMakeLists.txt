@@ -55,6 +55,6 @@ install(FILES
 )
 
 enable_testing()
-add_test( newlog ../tests/test.py newlog )
-add_test( add ../tests/test.py add )
+add_test( newlog ../tests/run_test.py newlog ${CMAKE_BINARY_DIR} )
+add_test( add ../tests/run_test.py add ${CMAKE_BINARY_DIR} )
 
