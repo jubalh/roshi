@@ -1,4 +1,4 @@
-ExerciseId = 
+ExerciseId = 1
       Name = Squat
       Sets = 5
       Reps = 5
@@ -11,7 +11,7 @@ ExerciseId =
    Station = 
  SessionId = 1
 
-ExerciseId = 
+ExerciseId = 2
       Name = Deadlift
       Sets = 1
       Reps = 1
@@ -24,7 +24,7 @@ ExerciseId =
    Station = 
  SessionId = 1
 
-ExerciseId = 
+ExerciseId = 3
       Name = Squat
       Sets = 10
       Reps = 10
@@ -37,7 +37,7 @@ ExerciseId =
    Station = 
  SessionId = 1
 
-ExerciseId = 
+ExerciseId = 4
       Name = Squat
       Sets = 1
       Reps = 1
@@ -49,16 +49,3 @@ ExerciseId =
      Tempo = 
    Station = 
  SessionId = 2
-
-ExerciseId = 
-      Name = Push-Ups
-      Sets = 2
-      Reps = 20
-      Time = 
-      Rest = 
-    Weight = 0
-  isWarmup = 0
-      Note = 
-     Tempo = 
-   Station = 
- SessionId = 3
