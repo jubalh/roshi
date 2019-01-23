@@ -147,12 +147,21 @@ if __name__ == "__main__":
 	check_binaries()
 	if len(sys.argv) > 1:
 		if sys.argv[1] == "newlog":
-			test_newlog()
 			print("Running test: newlog")
+			test_newlog()
+		elif sys.argv[1] == "add":
+			print("Running test: add")
+			subprocess.run([ROSHI, DBNAME, 'newlog', '-e'], stdout=FNULL, stderr=subprocess.STDOUT)
+			test_add()
+		else:
+			print("No such test available")
+			sys.exit(1)
+
 		sys.exit(0)
 	else:
 		print("Running all tests..")
 		test_newlog()
 		test_add()
-		remove(DBNAME)
-		remove(SQL_DUMP)
+
+	remove(DBNAME)
+	remove(SQL_DUMP)
