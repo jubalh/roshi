@@ -6,6 +6,7 @@ import subprocess
 import os
 import sys
 
+ROSHI = '../roshi'
 DBNAME = 'test.db'
 SQL_DUMP = 'sql1.is'
 
@@ -17,24 +18,25 @@ def check_binaries():
 			print(b)
 			sys.exit(1)
 
-def main():
+def test_newlog():
 	#ROSHI NEWLOG
 	try:
-		subprocess.run(['./roshi', DBNAME, 'newlog', '-e'])
+		subprocess.run([ROSHI, DBNAME, 'newlog', '-e'])
 	except:
 		print('\033[31mFAILURE\033[37m Make sure to have roshi compiled')
 		sys.exit(1)
 
 	os.system("sqlite3 -line " + DBNAME + " 'select * from Exercises;' > " + SQL_DUMP)
 
-	ret = os.system('diff tests/expected_result_1 ' + SQL_DUMP)
+	ret = os.system('diff expected_result_1 ' + SQL_DUMP)
 	if ret == 0:
 		print('Newlog: \033[32mSUCCESS\033[37m')
 	else:
 		print('Newlog: \033[31mFAILURE\033[37m')
 
+def test_add():
 	#ROSHI ADD
-	child = pexpect.spawnu('./roshi ' + DBNAME + ' add')
+	child = pexpect.spawnu(ROSHI + ' ' + DBNAME + ' add')
 	try:
 		#Session
 		child.expect('Session name: ')
@@ -83,7 +85,7 @@ def main():
 		child.close()
 
 	#ROSHI ADD
-	child = pexpect.spawnu('./roshi ' + DBNAME + ' add')
+	child = pexpect.spawnu(ROSHI + ' ' + DBNAME + ' add')
 	try:
 		#Session
 		child.expect('Session name: ')
@@ -133,9 +135,9 @@ def main():
 	if child.isalive():
 		child.close()
 
-	os.remove(DBNAME)
-	os.remove(SQL_DUMP)
-
 if __name__ == "__main__":
 	check_binaries()
-	main()
+	test_newlog()
+	test_add()
+	os.remove(DBNAME)
+	os.remove(SQL_DUMP)

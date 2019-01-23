@@ -55,5 +55,5 @@ install(FILES
 )
 
 enable_testing()
-add_test( maintest ../test.py )
+add_test( maintest ../tests/test.py )
 
