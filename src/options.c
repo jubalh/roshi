@@ -203,11 +203,12 @@ int parse_options(int argc, char *argv[])
 {
 	if (strcmp(argv[1], "newlog") == 0)
 	{
-		parse_newlog(argc, argv);
+		return parse_newlog(argc, argv);
 	} else {
 		// if db doesnt exist or no further argument
 		if ( (access(argv[0], F_OK) == -1) || argc < 2)
 		{
+			fprintf(stderr, "Workoutlog '%s' does not exist\n", argv[0]);
 			return EXIT_FAILURE;
 		}
 
@@ -223,9 +224,8 @@ int parse_options(int argc, char *argv[])
 		} else if (strcmp(argv[1], "pr") == 0) {
 			return parse_pr(argc, argv);
 		} else {
+			fprintf(stderr, "No such subcommand\n");
 			return EXIT_FAILURE;
 		}
 	}
-
-	return EXIT_SUCCESS;
 }

@@ -24,11 +24,11 @@ static void print_usage()
 
 int main(int argc, char *argv[])
 {
-	if (argc < 3 || EXIT_FAILURE == parse_options(argc-1, argv+1))
+	if (argc < 3)
 	{
 		print_usage();
-		return EXIT_FAILURE;
+		return EXIT_SUCCESS;
 	}
 
-	return EXIT_SUCCESS;
+	return parse_options(argc-1, argv+1);
 }
