@@ -43,7 +43,7 @@ static void cmd_analyze_generic(const char* filename, const char* query, void (*
 	}
 
 	FILE *fp;
-	fp = fopen(TMPFILE, "w+");
+	fp = fopen(TMPFILE, "w+e");
 	if (fp == NULL)
 	{
 		exit(2);
