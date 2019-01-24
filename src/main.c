@@ -16,10 +16,10 @@ static void print_usage()
 #endif
 
 	printf("Usage:\n");
-	printf("roshi \e[3mfile_name\e[0m newlog - Create new training log\n");
-	printf("roshi \e[3mfile_name\e[0m list - List logged training sessions\n");
-	printf("roshi \e[3mfile_name\e[0m show session_name - Display training session\n");
-	printf("roshi \e[3mfile_name\e[0m add - Add trainig session\n");
+	printf("roshi \033[3mfile_name\033[0m newlog - Create new training log\n");
+	printf("roshi \033[3mfile_name\033[0m list - List logged training sessions\n");
+	printf("roshi \033[3mfile_name\033[0m show session_name - Display training session\n");
+	printf("roshi \033[3mfile_name\033[0m add - Add trainig session\n");
 }
 
 int main(int argc, char *argv[])

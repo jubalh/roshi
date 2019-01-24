@@ -45,7 +45,9 @@ static void cmd_analyze_generic(const char* filename, const char* query, void (*
 	FILE *fp;
 	fp = fopen(TMPFILE, "w+");
 	if (fp == NULL)
+	{
 		exit(2);
+	}
 
 	data_cb(fp, stmt);
 
