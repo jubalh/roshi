@@ -39,7 +39,9 @@ static void cmd_analyze_generic(const char* filename, const char* query, void (*
 	{
 		int ret = mkdir(TMPDIR, S_IRUSR | S_IWUSR | S_IXUSR);
 		if (ret != 0)
+		{
 			exit(2);
+		}
 	}
 
 	FILE *fp;

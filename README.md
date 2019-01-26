@@ -1,6 +1,6 @@
 # roshi
 
-roshi is a commandline workout logger.
+roshi is a commandline workout journal.
 
 ## Building
 
