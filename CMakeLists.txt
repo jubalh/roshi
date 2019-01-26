@@ -40,7 +40,7 @@ endif()
 
 add_executable (roshi ${SRC})
 
-target_link_libraries (roshi sqlite3 readline)
+target_link_libraries (roshi sqlite3 readline confuse)
 
 install(TARGETS
 	roshi
