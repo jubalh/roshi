@@ -7,29 +7,14 @@
 #
 
 _roshi () {
-   if (( CURRENT > 3)); then
-      cmd=${words[3]}
-      case "${cmd}" in
-         add)
-            _arguments : \
-               "-h[Show help]"
-            ;;
-         show)
-            _arguments : \
-               "-i[Lookup session by index]" \
-               "-h[Show help]"
-            ;;
-      esac
-   else
-      _arguments : \
-         '1: :_files' \
-         '2:subcommand:((
-            newlog\:"create a new workoutlog"
-            add\:"add new training session"
-            show\:"show a certain training sessions"
-            list\:"list all logged workouts"
-         ))'
-   fi
+   _arguments : \
+      '1: :_files' \
+      '2:subcommand:((
+         newlog\:"create a new workoutlog"
+         add\:"add new training session"
+         show\:"show a certain training sessions"
+         list\:"list all logged workouts"
+      ))'
 }
 
 _roshi
