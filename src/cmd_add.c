@@ -223,12 +223,12 @@ void cmd_add(const char *filename)
 	while (strcmp(be[EXNAME], "") != 0)
 	{
 		be[EXSTATION] = readline("Station: ");
-		be[EXWEIGHT] = readline("Weight: ");
+		be[EXWEIGHT] = readline("Weight (kg): ");
 		be[EXSETS] = readline("Sets: ");
 		be[EXREPS] = readline("Reps: ");
-		be[EXTIME] = readline("Time/Duration: ");
+		be[EXTIME] = readline("Time/Duration (min): ");
 		be[EXTEMPO] = readline("Tempo: ");
-		be[EXREST] = readline("Rest time: ");
+		be[EXREST] = readline("Rest time (min): ");
 		rl_startup_hook = readline_warmup_template_hook;
 		be[EXISWARMUP] = readline("Warmup set: ");
 		rl_startup_hook = NULL;
@@ -237,9 +237,15 @@ void cmd_add(const char *filename)
 		be[EXTAGS] = readline("Tags: ");
 		rl_attempted_completion_function = cmd_add_completion_none;
 
+		int isWarmup = 0;
+		if (strcmp(be[EXISWARMUP], "yes") != 0)
+		{
+			isWarmup = 1;
+		}
+
 		// submit exercise
 		char *szErrMsg = 0;
-		snprintf(query, 4095, "INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `SessionID`) VALUES ('%s', '%s', '%s', '%s', '%d')", be[EXNAME], be[EXSETS], be[EXREPS], be[EXWEIGHT], session_id);
+		snprintf(query, 4095, "INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `Time`, `Tempo`, `Rest`, `isWarmup`, `Note`, `Station`, `SessionID`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%d')", be[EXNAME], be[EXSETS], be[EXREPS], be[EXWEIGHT], be[EXTIME], be[EXTEMPO], be[EXREST], isWarmup, be[EXNOTE], be[EXSTATION], session_id);
 		if(SQLITE_OK != sqlite3_exec(g_db, query, NULL, 0, &szErrMsg))
 		{
 			printf("SQL error: %s\n", szErrMsg);
