@@ -33,8 +33,10 @@ def test_newlog():
 	#ROSHI NEWLOG
 	subprocess.run([ROSHI, DBNAME, 'newlog', '-e'], stdout=FNULL, stderr=subprocess.STDOUT)
 
-	os.system("sqlite3 -line " + DBNAME + " 'select * from Exercises;' > " + SQL_DUMP)
+	os.system("sqlite3 -line " + DBNAME + " 'select * from Exercises, Sessions, Tags, ExercisesTags;' > " + SQL_DUMP)
 
+	os.system("sed -i 's/Start =.*/Starta/g' " + SQL_DUMP)
+	os.system("sed -i 's/End =.*/Enda/g' " + SQL_DUMP)
 	ret = os.system('diff expected_result_newlog_1 ' + SQL_DUMP)
 	if ret == 0:
 		print('newlog: \033[32mSUCCESS\033[37m')

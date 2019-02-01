@@ -10,6 +10,137 @@ ExerciseId = 1
      Tempo = 
    Station = 
  SessionId = 1
+ SessionId = 1
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 1
+      Name = Squat
+      Sets = 5
+      Reps = 5
+      Time = 
+      Rest = 
+    Weight = 80
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 1
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 1
+      Name = Squat
+      Sets = 5
+      Reps = 5
+      Time = 
+      Rest = 
+    Weight = 80
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 2
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 1
+      Name = Squat
+      Sets = 5
+      Reps = 5
+      Time = 
+      Rest = 
+    Weight = 80
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 2
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 1
+      Name = Squat
+      Sets = 5
+      Reps = 5
+      Time = 
+      Rest = 
+    Weight = 80
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 3
+      Name = Bodyweight
+     Place = Sunnypark
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 1
+      Name = Squat
+      Sets = 5
+      Reps = 5
+      Time = 
+      Rest = 
+    Weight = 80
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 3
+      Name = Bodyweight
+     Place = Sunnypark
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
 
 ExerciseId = 2
       Name = Deadlift
@@ -23,6 +154,137 @@ ExerciseId = 2
      Tempo = 
    Station = 
  SessionId = 1
+ SessionId = 1
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 2
+      Name = Deadlift
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 120
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 1
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 2
+      Name = Deadlift
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 120
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 2
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 2
+      Name = Deadlift
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 120
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 2
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 2
+      Name = Deadlift
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 120
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 3
+      Name = Bodyweight
+     Place = Sunnypark
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 2
+      Name = Deadlift
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 120
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 3
+      Name = Bodyweight
+     Place = Sunnypark
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
 
 ExerciseId = 3
       Name = Squat
@@ -36,6 +298,137 @@ ExerciseId = 3
      Tempo = 
    Station = 
  SessionId = 1
+ SessionId = 1
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 3
+      Name = Squat
+      Sets = 10
+      Reps = 10
+      Time = 
+      Rest = 
+    Weight = 35
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 1
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 3
+      Name = Squat
+      Sets = 10
+      Reps = 10
+      Time = 
+      Rest = 
+    Weight = 35
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 2
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 3
+      Name = Squat
+      Sets = 10
+      Reps = 10
+      Time = 
+      Rest = 
+    Weight = 35
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 2
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 3
+      Name = Squat
+      Sets = 10
+      Reps = 10
+      Time = 
+      Rest = 
+    Weight = 35
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 3
+      Name = Bodyweight
+     Place = Sunnypark
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 3
+      Name = Squat
+      Sets = 10
+      Reps = 10
+      Time = 
+      Rest = 
+    Weight = 35
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 3
+      Name = Bodyweight
+     Place = Sunnypark
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
 
 ExerciseId = 4
       Name = Squat
@@ -49,3 +442,134 @@ ExerciseId = 4
      Tempo = 
    Station = 
  SessionId = 2
+ SessionId = 1
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 4
+      Name = Squat
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 150
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 2
+ SessionId = 1
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 4
+      Name = Squat
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 150
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 2
+ SessionId = 2
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 4
+      Name = Squat
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 150
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 2
+ SessionId = 2
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 4
+      Name = Squat
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 150
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 2
+ SessionId = 3
+      Name = Bodyweight
+     Place = Sunnypark
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 4
+      Name = Squat
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 150
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 2
+ SessionId = 3
+      Name = Bodyweight
+     Place = Sunnypark
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
