@@ -1,0 +1,28 @@
+#compdef roshi
+#vim: noexpandtab:ts=4:sts=4:sw=4
+
+_roshi () {
+   if (( CURRENT > 2)); then
+      cmd=${words[2]}
+      case "${cmd}" in
+         add)
+            _arguments : \
+               "-h[Show help]"
+            ;;
+         show)
+            _arguments : \
+               "-i[Lookup session by index]" \
+               "-h[Show help]"
+            ;;
+      esac
+   else
+      local -a subcommands
+      subcommands=(
+         "add:Add new session"
+         "show:Show sessions"
+		)
+		_describe -t commands 'roshi' subcommands
+   fi
+}
+
+_roshi

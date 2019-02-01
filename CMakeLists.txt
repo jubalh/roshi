@@ -57,6 +57,12 @@ install(FILES
 	man
 )
 
+install(
+	FILES completion/roshi.zsh-completion
+	DESTINATION share/zsh/site-functions
+	RENAME _roshi
+)
+
 enable_testing()
 add_test( newlog ../tests/run_test.py newlog ${CMAKE_BINARY_DIR} )
 add_test( add ../tests/run_test.py add ${CMAKE_BINARY_DIR} )
