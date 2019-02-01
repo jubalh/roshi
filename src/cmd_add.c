@@ -116,7 +116,7 @@ void cmd_add(const char *filename)
 
 		// transform some of the inputs so they fit into db
 		int t_isWarmup = 0;
-		if (strcmp(be[EXISWARMUP], "yes") != 0)
+		if (strcmp(be[EXISWARMUP], "yes") == 0)
 		{
 			t_isWarmup = 1;
 		}
