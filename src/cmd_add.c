@@ -222,6 +222,7 @@ void cmd_add(const char *filename)
 	rl_attempted_completion_function = cmd_add_completion_none;
 	while (strcmp(be[EXNAME], "") != 0)
 	{
+		//TODO: need to add validation, and ask again if not valid
 		be[EXSTATION] = readline("Station: ");
 		be[EXWEIGHT] = readline("Weight (kg): ");
 		be[EXSETS] = readline("Sets: ");
@@ -237,15 +238,22 @@ void cmd_add(const char *filename)
 		be[EXTAGS] = readline("Tags: ");
 		rl_attempted_completion_function = cmd_add_completion_none;
 
-		int isWarmup = 0;
+		// transform some of the inputs so they fit into db
+		int t_isWarmup = 0;
 		if (strcmp(be[EXISWARMUP], "yes") != 0)
 		{
-			isWarmup = 1;
+			t_isWarmup = 1;
 		}
+
+		// TODO: might support 's' 'm' 'h' after the digit
+		// user enters in minutes (for now); save in db as seconds
+		long int tt = strtol(be[EXTIME], NULL, 10);
+		long int t_time = strtol(be[EXTIME], NULL, 10) * 60;
+		long int t_rest = strtol(be[EXREST], NULL, 10) * 60;
 
 		// submit exercise
 		char *szErrMsg = 0;
-		snprintf(query, 4095, "INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `Time`, `Tempo`, `Rest`, `isWarmup`, `Note`, `Station`, `SessionID`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%d')", be[EXNAME], be[EXSETS], be[EXREPS], be[EXWEIGHT], be[EXTIME], be[EXTEMPO], be[EXREST], isWarmup, be[EXNOTE], be[EXSTATION], session_id);
+		snprintf(query, 4095, "INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `Time`, `Tempo`, `Rest`, `isWarmup`, `Note`, `Station`, `SessionID`) VALUES ('%s', '%s', '%s', '%s', '%ld', '%s', '%ld', '%d', '%s', '%s', '%d')", be[EXNAME], be[EXSETS], be[EXREPS], be[EXWEIGHT], t_time, be[EXTEMPO], t_rest, t_isWarmup, be[EXNOTE], be[EXSTATION], session_id);
 		if(SQLITE_OK != sqlite3_exec(g_db, query, NULL, 0, &szErrMsg))
 		{
 			printf("SQL error: %s\n", szErrMsg);
@@ -285,7 +293,6 @@ void cmd_add(const char *filename)
 			} else {
 				fprintf(stderr, "Error in cmd_add(): add tags\n");
 			}
-
 
 			tag = strtok(NULL, ",");
 		}
