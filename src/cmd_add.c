@@ -2,8 +2,12 @@
 
 #include <stdlib.h> // free()
 #include <time.h> // localtime(), strftime()
-#include <readline/readline.h>
-#include "sql.h"
+#include <stdio.h>  // printf()
+#include <string.h> // strtok(), strcmp()
+#include <readline/readline.h> // rl_*()
+#include "sql.h" // open_db()
+#include "cmd_add_readline_completers.h" // cmd_add_completion_*()
+#include "cmd_add_readline_hooks.h" // readline_*_template_hook()
 
 // Nr of SESSION_FIELDS
 #define MAX_S_ENUM_FIELDS 7
@@ -36,134 +40,6 @@ enum EXERCISE_FIELDS {
 	EXSTATION,
 	EXTAGS
 };
-
-char * generic_generator(const char *table, const char *text, int state, const char *col)
-{
-	static sqlite3_stmt *stmt = NULL;
-
-	// first call
-	if (!state) {
-		char query[4096];
-		query[0] = '\0';
-
-		snprintf(query, 4095,  "SELECT %s FROM %s WHERE %s LIKE '%s%%' GROUP BY %s", col, table, col, text, col);
-
-		int rc = sqlite3_prepare_v2(g_db, query, -1, &stmt, NULL );
-		if( rc!=SQLITE_OK )
-		{
-			printf("error");
-		}
-	}
-
-	// go through all results and return them
-	const char *data = NULL;
-	while( sqlite3_step(stmt) == SQLITE_ROW ) {
-		data = (const char*)sqlite3_column_text( stmt, 0 );
-		return strdup(data);
-	}
-
-	return NULL;
-}
-
-char * session_name_generator(const char *text, int state)
-{
-	return generic_generator("Sessions", text, state, "Sessions.Name");
-}
-
-char * session_place_generator(const char *text, int state)
-{
-	return generic_generator("Sessions", text, state, "Sessions.Place");
-}
-
-char * exercise_tag_generator(const char *text, int state)
-{
-	return generic_generator("Tags", text, state, "Tags.Name");
-}
-
-char * exercise_name_generator(const char *text, int state)
-{
-	return generic_generator("Exercises", text, state, "Exercises.Name");
-}
-
-char ** cmd_add_completion_none(const char *text, int start, int end)
-{
-	rl_attempted_completion_over = 1;
-	return NULL;
-}
-
-char ** cmd_add_completion_session_name(const char *text, int start, int end)
-{
-	// no default completion
-	rl_attempted_completion_over = 1;
-	// dont add space after completion
-	rl_completion_append_character = '\0';
-
-	return rl_completion_matches(text, session_name_generator);
-}
-
-char ** cmd_add_completion_session_place(const char *text, int start, int end)
-{
-	// no default completion
-	rl_attempted_completion_over = 1;
-	// dont add space after completion
-	rl_completion_append_character = '\0';
-
-	return rl_completion_matches(text, session_place_generator);
-}
-
-char ** cmd_add_completion_exercise_tag(const char *text, int start, int end)
-{
-	// no default completion
-	rl_attempted_completion_over = 1;
-	// dont add space after completion
-	rl_completion_append_character = '\0';
-
-	return rl_completion_matches(text, exercise_tag_generator);
-}
-
-char ** cmd_add_completion_exercise_name(const char *text, int start, int end)
-{
-	// no default completion
-	rl_attempted_completion_over = 1;
-	// dont add space after completion
-	rl_completion_append_character = '\0';
-
-	return rl_completion_matches(text, exercise_name_generator);
-}
-
-int readline_time_template_hook(void) {
-	time_t t;
-	struct tm* tm_info;
-
-	time(&t);
-	tm_info = localtime(&t);
-
-	char buffer[12];
-	strftime(buffer, 12, "%H:%M", tm_info);
-
-	return rl_insert_text(buffer);
-}
-
-int readline_date_template_hook(void) {
-	time_t t;
-	struct tm* tm_info;
-
-	time(&t);
-	tm_info = localtime(&t);
-
-	char buffer[12];
-	strftime(buffer, 12, "%Y-%m-%d", tm_info);
-
-	return rl_insert_text(buffer);
-}
-
-int readline_warmup_template_hook(void) {
-	return rl_insert_text("no");
-}
-
-int readline_feeling_template_hook(void) {
-	return rl_insert_text("0");
-}
 
 void cmd_add(const char *filename)
 {

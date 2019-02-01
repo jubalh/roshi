@@ -9,6 +9,9 @@ set (SRC
 	src/commands.c
 	src/cmd_newlog.c
 	src/cmd_add.c
+	src/cmd_add_readline_completers.c
+	src/cmd_add_readline_generators.c
+	src/cmd_add_readline_hooks.c
 	src/options.c
 	src/cmd_analyze.c
 	)
