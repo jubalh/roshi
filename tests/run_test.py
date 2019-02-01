@@ -35,7 +35,7 @@ def test_newlog():
 
 	os.system("sqlite3 -line " + DBNAME + " 'select * from Exercises;' > " + SQL_DUMP)
 
-	ret = os.system('diff expected_result_1 ' + SQL_DUMP)
+	ret = os.system('diff expected_result_newlog_1 ' + SQL_DUMP)
 	if ret == 0:
 		print('newlog: \033[32mSUCCESS\033[37m')
 	else:
@@ -76,7 +76,7 @@ def test_add():
 		child.expect('Tempo: ')
 		child.sendline('4010')
 		child.expect('Rest time \(min\): ')
-		child.sendline('120')
+		child.sendline('2')
 		child.expect('Warmup set: ')
 		child.sendline('')
 		child.expect('Notes: ')
@@ -85,7 +85,13 @@ def test_add():
 		child.sendline('tag1,tag2,tag3')
 		child.expect('Exercise name: ')
 		child.sendline('')
-		print('add: \033[32mSUCCESS\033[37m')
+
+		os.system("sqlite3 -line " + DBNAME + " 'select * from Exercises;' > " + SQL_DUMP)
+		ret = os.system('diff expected_result_add_1 ' + SQL_DUMP)
+		if ret != 0:
+			print('add: \033[31mFAILURE\033[37m')
+		else:
+			print('add: \033[32mSUCCESS\033[37m')
 	except (pexpect.EOF,pexpect.TIMEOUT) as e:
 		print('add: \033[31mFAILURE\033[37m')
 		print(e)
