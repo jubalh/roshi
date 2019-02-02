@@ -41,17 +41,11 @@ enum EXERCISE_FIELDS {
 	EXTAGS
 };
 
-void cmd_add(const char *filename)
+sqlite3_int64 collect_submit_session(char **bs)
 {
-	char *bs[MAX_S_ENUM_FIELDS];
 
 	for (int i=0; i<MAX_S_ENUM_FIELDS; i++)
 		bs[i] = NULL;
-
-	printf("New Session\n");
-	printf("-----------------------\n");
-
-	open_db(filename);
 
 	rl_attempted_completion_function = cmd_add_completion_session_name;
 
@@ -84,9 +78,18 @@ void cmd_add(const char *filename)
 	// get session id
 	sqlite3_int64 session_id = sqlite3_last_insert_rowid(g_db);
 
-	// init exercise buffers
-	char *be[MAX_E_ENUM_FIELDS];
+	// cleanup
+	for (int i=0; i<MAX_S_ENUM_FIELDS; i++)
+	{
+		free(bs[i]);
+	}
 
+	return session_id;
+}
+
+void collect_submit_exercises(char **be, sqlite3_int64 session_id)
+{
+	// init exercise buffers
 	for (int i=0; i<MAX_E_ENUM_FIELDS; i++)
 		be[i] = NULL;
 
@@ -96,6 +99,7 @@ void cmd_add(const char *filename)
 	rl_attempted_completion_function = cmd_add_completion_exercise_name;
 	be[EXNAME] = readline("Exercise name: ");
 	rl_attempted_completion_function = cmd_add_completion_none;
+	char query[4096];
 	while (strcmp(be[EXNAME], "") != 0)
 	{
 		//TODO: need to add validation, and ask again if not valid
@@ -184,12 +188,20 @@ void cmd_add(const char *filename)
 		be[EXNAME] = readline("\nExercise name: ");
 		rl_attempted_completion_function = cmd_add_completion_none;
 	}
+}
 
-	// cleanup
-	for (int i=0; i<MAX_S_ENUM_FIELDS; i++)
-	{
-		free(bs[i]);
-	}
+void cmd_add(const char *filename)
+{
+	open_db(filename);
+
+	printf("New Session\n");
+	printf("-----------------------\n");
+
+	char *bs[MAX_S_ENUM_FIELDS];
+	sqlite3_int64 session_id = collect_submit_session(bs);
+
+	char *be[MAX_E_ENUM_FIELDS];
+	collect_submit_exercises(be, session_id);
 
 	close_db();
 }
