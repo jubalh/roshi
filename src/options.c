@@ -83,10 +83,11 @@ static int parse_show(int argc, char *argv[])
 
 		session_search = strdup(argv[2]);
 		cmd_show(argv[0], session_search, 0);
-		free(session_search);
 	} else {
 		cmd_show(argv[0], session_search, 1);
 	}
+
+	free(session_search);
 
 	return EXIT_SUCCESS;
 }
