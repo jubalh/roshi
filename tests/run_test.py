@@ -42,12 +42,16 @@ def test_newlog():
 		print('newlog: \033[32mSUCCESS\033[37m')
 	else:
 		print('newlog: \033[31mFAILURE\033[37m')
+		sys.exit(1)
 
 def test_add():
 	#ROSHI ADD
 	child = pexpect.spawnu(ROSHI + ' ' + DBNAME + ' add')
 	try:
 		#Session
+		child.expect('Session name: ')
+		child.sendline('Wei;ght')
+		child.expect('Invalid input')
 		child.expect('Session name: ')
 		child.send('Weight\t\n')
 		child.expect('Place: ')
@@ -117,11 +121,15 @@ def test_add():
 		ret = os.system('diff expected_result_add_1 ' + SQL_DUMP)
 		if ret != 0:
 			print('add: \033[31mFAILURE\033[37m')
+			sys.exit(1)
 		else:
 			print('add: \033[32mSUCCESS\033[37m')
 	except (pexpect.EOF,pexpect.TIMEOUT) as e:
 		print('add: \033[31mFAILURE\033[37m')
+		print('before: ' + child.before)
+		print('after: ' + child.after)
 		print(e)
+		sys.exit(1)
 
 	if child.isalive():
 		child.close()
@@ -154,3 +162,4 @@ if __name__ == "__main__":
 
 	remove(DBNAME)
 	remove(SQL_DUMP)
+	sys.exit(0)
