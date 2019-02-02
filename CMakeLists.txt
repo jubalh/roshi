@@ -14,6 +14,7 @@ set (SRC
 	src/cmd_add_readline_hooks.c
 	src/options.c
 	src/cmd_analyze.c
+	src/config.c
 	)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
