@@ -25,14 +25,14 @@ static void print_usage()
 
 int main(int argc, char *argv[])
 {
-	struct roshi_config config;
-	read_config(&config);
-
 	if (argc < 3)
 	{
 		print_usage();
 		return EXIT_SUCCESS;
 	}
+
+	struct roshi_config config;
+	read_config(&config);
 
 	int ret = parse_options(argc-1, argv+1);
 	free_config(&config);
