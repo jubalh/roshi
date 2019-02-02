@@ -181,10 +181,17 @@ void collect_submit_exercises(char **be, sqlite3_int64 session_id)
 		for (int i=0; i<MAX_E_ENUM_FIELDS; i++)
 		{
 			free(be[i]);
+			be[i] = NULL;
 		}
+
 		rl_attempted_completion_function = cmd_add_completion_exercise_name;
 		be[EXNAME] = readline("\nExercise name: ");
 		rl_attempted_completion_function = cmd_add_completion_none;
+	}
+
+	if (be[EXNAME] != NULL)
+	{
+		free(be[EXNAME]);
 	}
 }
 
