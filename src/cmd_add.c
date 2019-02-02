@@ -3,6 +3,7 @@
 #include <stdlib.h> // free()
 #include <time.h> // localtime(), strftime()
 #include <stdio.h>  // printf()
+#include <stdbool.h> // bool
 #include <string.h> // strtok(), strcmp()
 #include <readline/readline.h> // rl_*()
 #include "sql.h" // open_db()
@@ -41,6 +42,32 @@ enum EXERCISE_FIELDS {
 	EXTAGS
 };
 
+bool validate(char *str, unsigned int flag)
+{
+	if ( (strchr(str, '\'') > 0) || (strchr(str, '"') > 0) || (strchr(str, ';') > 0) )
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void read_valid(char **dst, char *prompt)
+{
+	bool valid = false;
+	*dst = readline(prompt);
+
+	valid = validate(*dst, 0);
+	while (!valid)
+	{
+		printf("Invalid input\n");
+
+		free(*dst);
+		*dst = readline(prompt);
+		valid = validate(*dst, 0);
+	}
+}
+
 sqlite3_int64 collect_submit_session(char **bs)
 {
 	for (int i=0; i<MAX_S_ENUM_FIELDS; i++)
@@ -49,22 +76,22 @@ sqlite3_int64 collect_submit_session(char **bs)
 	rl_attempted_completion_function = cmd_add_completion_session_name;
 
 	// collect session info
-	bs[SNAME] = readline("Session name: ");
+	read_valid(&bs[SNAME], "Session name: ");
 	rl_attempted_completion_function = cmd_add_completion_session_place;
-	bs[SPLACE] = readline("Place: ");
+	read_valid(&bs[SPLACE], "Place: ");
 	rl_attempted_completion_function = cmd_add_completion_none;
 
 	rl_startup_hook = readline_date_template_hook;
-	bs[SDATE] = readline("Date: ");
+	read_valid(&bs[SDATE], "Date: ");
 	rl_startup_hook = readline_time_template_hook;
-	bs[SSTART] = readline("Start time: ");
-	bs[SEND] = readline("End time: ");
+	read_valid(&bs[SSTART], "Start time: ");
+	read_valid(&bs[SEND], "End time: ");
 	rl_startup_hook = NULL;
 
-	bs[SNOTES] = readline("Notes: ");
+	read_valid(&bs[SNOTES], "Notes: ");
 
 	rl_startup_hook = readline_feeling_template_hook;
-	bs[SFEELING] = readline("Feeling (-2 to 2): ");
+	read_valid(&bs[SFEELING], "Feeling (-2 to 2): ");
 	rl_startup_hook = NULL;
 
 	// submit session
@@ -96,25 +123,24 @@ void collect_submit_exercises(char **be, sqlite3_int64 session_id)
 	printf("\nExercises:\n");
 
 	rl_attempted_completion_function = cmd_add_completion_exercise_name;
-	be[EXNAME] = readline("Exercise name: ");
+	read_valid(&be[EXNAME], "Exercise name: ");
 	rl_attempted_completion_function = cmd_add_completion_none;
 	char query[4096];
 	while (strcmp(be[EXNAME], "") != 0)
 	{
-		//TODO: need to add validation, and ask again if not valid
-		be[EXSTATION] = readline("Station: ");
-		be[EXWEIGHT] = readline("Weight (kg): ");
-		be[EXSETS] = readline("Sets: ");
-		be[EXREPS] = readline("Reps: ");
-		be[EXTIME] = readline("Time/Duration (min): ");
-		be[EXTEMPO] = readline("Tempo: ");
-		be[EXREST] = readline("Rest time (min): ");
+		read_valid(&be[EXSTATION], "Station: ");
+		read_valid(&be[EXWEIGHT], "Weight (kg): ");
+		read_valid(&be[EXSETS], "Sets: ");
+		read_valid(&be[EXREPS], "Reps: ");
+		read_valid(&be[EXTIME], "Time/Duration (min): ");
+		read_valid(&be[EXTEMPO], "Tempo: ");
+		read_valid(&be[EXREST], "Rest time (min): ");
 		rl_startup_hook = readline_warmup_template_hook;
-		be[EXISWARMUP] = readline("Warmup set: ");
+		read_valid(&be[EXISWARMUP], "Warmup set: ");
 		rl_startup_hook = NULL;
-		be[EXNOTE] = readline("Notes: ");
+		read_valid(&be[EXNOTE], "Notes: ");
 		rl_attempted_completion_function = cmd_add_completion_exercise_tag;
-		be[EXTAGS] = readline("Tags: ");
+		read_valid(&be[EXTAGS], "Tags: ");
 		rl_attempted_completion_function = cmd_add_completion_none;
 
 		// transform some of the inputs so they fit into db
@@ -185,7 +211,7 @@ void collect_submit_exercises(char **be, sqlite3_int64 session_id)
 		}
 
 		rl_attempted_completion_function = cmd_add_completion_exercise_name;
-		be[EXNAME] = readline("\nExercise name: ");
+		read_valid(&be[EXNAME], "\nExercise name: ");
 		rl_attempted_completion_function = cmd_add_completion_none;
 	}
 
