@@ -43,7 +43,6 @@ enum EXERCISE_FIELDS {
 
 sqlite3_int64 collect_submit_session(char **bs)
 {
-
 	for (int i=0; i<MAX_S_ENUM_FIELDS; i++)
 		bs[i] = NULL;
 
@@ -127,7 +126,6 @@ void collect_submit_exercises(char **be, sqlite3_int64 session_id)
 
 		// TODO: might support 's' 'm' 'h' after the digit
 		// user enters in minutes (for now); save in db as seconds
-		long int tt = strtol(be[EXTIME], NULL, 10);
 		long int t_time = strtol(be[EXTIME], NULL, 10) * 60;
 		long int t_rest = strtol(be[EXREST], NULL, 10) * 60;
 
