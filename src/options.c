@@ -108,7 +108,7 @@ static int parse_add(int argc, char *argv[])
 		{
 			// help
 			case 'h':
-				printf("roshi \033[3mfile_name\033[0m add: adds a session.\n\n");
+				printf("roshi \033[3mfile_name\033[0m add [insert-template]: adds a session.\n\n");
 				printf("-h: Display this help\n");
 				exit(EXIT_SUCCESS);
 				break;

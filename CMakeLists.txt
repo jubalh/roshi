@@ -53,7 +53,7 @@ install(TARGETS
 )
 
 install(FILES
-	roshi.1
+	man/roshi.1 man/roshi-config.5
 	DESTINATION
 	man
 )

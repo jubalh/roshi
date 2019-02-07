@@ -21,9 +21,9 @@ display a short help text.
 .TP
 \-e
 fill workout log with sample data.
-.SS add
+.SS add [insert-template]
 .TP
-add a new session to the workoutlog.
+add a new session to the workoutlog. It can be followed by an optional insert-template. insert-templates have to be configured in the configuration file. See roshi-config(5).
 .SS list
 .TP
 list logged sessions.
@@ -51,4 +51,4 @@ roshi returns a zero exist status if all goes well.
 .SH AUTHOR
 Michael Vetter (jubalh@iodoru.org)
 .SH SEE ALSO
-gnuplot(1)
+roshi-config(5) gnuplot(1)
