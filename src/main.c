@@ -31,7 +31,10 @@ int main(int argc, char *argv[])
 		return EXIT_SUCCESS;
 	}
 
-	read_config();
+	if (read_config() == EXIT_FAILURE)
+	{
+		return EXIT_FAILURE;
+	}
 
 	int ret = parse_options(argc-1, argv+1);
 	free_config();

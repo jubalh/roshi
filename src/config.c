@@ -54,7 +54,7 @@ static char* choose_config()
 	return NULL;
 }
 
-static void parse_config(char *path)
+static int parse_config(char *path)
 {
 	cfg_opt_t insert_template_opts[] = {
 		CFG_BOOL("omit_session_place", cfg_false, CFGF_NONE),
@@ -78,40 +78,44 @@ static void parse_config(char *path)
 		CFG_END()
 	};
 
-	cfg = cfg_init(cfgopt, CFGF_IGNORE_UNKNOWN);
+	//for now lets warn, so that the user finds typos
+	//cfg = cfg_init(cfgopt, CFGF_IGNORE_UNKNOWN);
+	cfg = cfg_init(cfgopt, 0);
 
 	int ret = cfg_parse(cfg, path);
 
 	if (ret == CFG_FILE_ERROR)
 	{
-		fprintf(stderr, "libconfuse: file error");
-		// TODO: probably stop
+		fprintf(stderr, "libconfuse: file error\n");
+		return EXIT_FAILURE;
 	}
 	else if (ret == CFG_PARSE_ERROR)
 	{
-		fprintf(stderr, "libconfuse: parse error");
-		// TODO: probably stop
+		fprintf(stderr, "Error in configuration file %s\n", path);
+		return EXIT_FAILURE;
 	}
 
-	/* Debug:
-	int n = cfg_size(cfg, "insert-template");
-	printf("%d configured:\n", n);
-	for (int i = 0; i < n; i++) {
-		cfg_t *tmpl = cfg_getnsec(cfg, "insert-template", i);
-		printf("template #%u (%s):\n", i + 1, cfg_title(tmpl));
-		printf("se_omit_place = %s\n", cfg_getbool(tmpl, "se_omit_place") ? "true" : "false");
-	}
-	*/
+	return EXIT_SUCCESS;
 }
 
-void read_config()
+// returns:
+// EXIT_SUCCESS (0) if config read succesfully
+// EXIT_FAILURE (1) if there was a parse or other error
+// 3 if there was no config found
+int read_config()
 {
+	int ret = EXIT_SUCCESS;
 	char *conf_path = choose_config();
+
 	if (conf_path != NULL)
 	{
-		parse_config(conf_path);
+		ret = parse_config(conf_path);
 		free(conf_path);
+	} else {
+		ret = 3;
 	}
+
+	return ret;
 }
 
 void free_config()
@@ -119,6 +123,9 @@ void free_config()
 	cfg_free(cfg);
 }
 
+// returns:
+// true if variables were set from config
+// false if all were just set to false
 bool fill_omit_vars(const char *template_name, bool *b)
 {
 	if ((cfg != NULL) && (template_name != NULL))

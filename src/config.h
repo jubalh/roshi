@@ -21,6 +21,6 @@ enum CMDADD_OMITS {
 	OM_EXERCISE_TAGS
 };
 
-void read_config();
+int read_config();
 void free_config();
 bool fill_omit_vars(const char *template_name, bool *b);
