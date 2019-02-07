@@ -5,9 +5,11 @@
 #include <string.h> // strdup()
 #include <unistd.h> // access()
 #include <confuse.h> // cfg_*
-#include "config.h" // roshi_config
+#include "config.h" // enum CMDADD_OMITS
 
 #define CONF_FILE "roshi.conf"
+
+static cfg_t *cfg = NULL;
 
 // checks whether config is readable at fn
 // returns full path if true. NULL if not.
@@ -23,7 +25,7 @@ static char* set_conf_path(char *fn)
 // chooses config after following prio:
 // 1. local, 2. XDG_CONFIG_HOME 3. ~/.config
 // returns the path that got hit first
-static char* choose_config(struct roshi_config *config)
+static char* choose_config()
 {
 	char *path;
 	path = set_conf_path(CONF_FILE);
@@ -52,7 +54,7 @@ static char* choose_config(struct roshi_config *config)
 	return NULL;
 }
 
-static void parse_config(struct roshi_config *config, char *path)
+static void parse_config(char *path)
 {
 	cfg_opt_t insert_template_opts[] = {
 		CFG_BOOL("omit_session_place", cfg_false, CFGF_NONE),
@@ -72,23 +74,23 @@ static void parse_config(struct roshi_config *config, char *path)
 	};
 
 	cfg_opt_t cfgopt[] = {
-		CFG_SIMPLE_STR("test", &config->test),
 		CFG_SEC("insert-template", insert_template_opts, CFGF_MULTI | CFGF_TITLE),
 		CFG_END()
 	};
 
-	cfg_t *cfg;
 	cfg = cfg_init(cfgopt, CFGF_IGNORE_UNKNOWN);
 
-	int ret =cfg_parse(cfg, path);
+	int ret = cfg_parse(cfg, path);
 
 	if (ret == CFG_FILE_ERROR)
 	{
 		fprintf(stderr, "libconfuse: file error");
+		// TODO: probably stop
 	}
 	else if (ret == CFG_PARSE_ERROR)
 	{
 		fprintf(stderr, "libconfuse: parse error");
+		// TODO: probably stop
 	}
 
 	/* Debug:
@@ -100,25 +102,55 @@ static void parse_config(struct roshi_config *config, char *path)
 		printf("se_omit_place = %s\n", cfg_getbool(tmpl, "se_omit_place") ? "true" : "false");
 	}
 	*/
-
-	cfg_free(cfg);
 }
 
-void read_config(struct roshi_config *config)
+void read_config()
 {
-	// init struct
-	config->test = NULL;
-
-	char *conf_path = choose_config(config);
+	char *conf_path = choose_config();
 	if (conf_path != NULL)
 	{
-		parse_config(config, conf_path);
+		parse_config(conf_path);
 		free(conf_path);
 	}
 }
 
-void free_config(struct roshi_config *config)
+void free_config()
 {
-	free(config->test);
-	config->test = NULL;
+	cfg_free(cfg);
+}
+
+bool fill_omit_vars(const char *template_name, bool *b)
+{
+	if ((cfg != NULL) && (template_name != NULL))
+	{
+		int n = cfg_size(cfg, "insert-template");
+		for (int i = 0; i < n; i++)
+		{
+			cfg_t *tmpl = cfg_getnsec(cfg, "insert-template", i);
+			if (strcmp(template_name, cfg_title(tmpl)) == 0)
+			{
+				b[OM_SESSION_PLACE] = cfg_getbool(tmpl, "omit_session_place");
+				b[OM_SESSION_NOTES] = cfg_getbool(tmpl, "omit_session_notes");
+				b[OM_SESSION_FEELING] = cfg_getbool(tmpl, "omit_session_feeling");
+				b[OM_EXERCISE_STATION] = cfg_getbool(tmpl, "omit_exercise_station");
+				b[OM_EXERCISE_WEIGHT] = cfg_getbool(tmpl, "omit_exercise_weight");
+				b[OM_EXERCISE_SETS] = cfg_getbool(tmpl, "omit_exercise_sets");
+				b[OM_EXERCISE_REPS] = cfg_getbool(tmpl, "omit_exercise_reps");
+				b[OM_EXERCISE_TIME] = cfg_getbool(tmpl, "omit_exercise_time");
+				b[OM_EXERCISE_TEMPO] = cfg_getbool(tmpl, "omit_exercise_tempo");
+				b[OM_EXERCISE_REST] = cfg_getbool(tmpl, "omit_exercise_rest");
+				b[OM_EXERCISE_WARMUP] = cfg_getbool(tmpl, "omit_exercise_warmup");
+				b[OM_EXERCISE_NOTES] = cfg_getbool(tmpl, "omit_exercise_notes");
+				b[OM_EXERCISE_TAGS] = cfg_getbool(tmpl, "omit_exercise_tags");
+				return true;
+			}
+		}
+	}
+
+	for (int i = 0; i < CMDADD_OMIT_COUNT; i++)
+	{
+		b[i] = false;
+	}
+
+	return false;
 }

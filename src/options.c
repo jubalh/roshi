@@ -95,6 +95,12 @@ static int parse_show(int argc, char *argv[])
 static int parse_add(int argc, char *argv[])
 {
 	int opt;
+	char* insert_template = NULL;
+
+	if (argc >= 3)
+	{
+		insert_template = argv[2];
+	}
 
 	while ((opt = getopt(argc, argv, "h")) != -1)
 	{
@@ -112,7 +118,7 @@ static int parse_add(int argc, char *argv[])
 		}
 	}
 
-	cmd_add(argv[0]);
+	cmd_add(argv[0], insert_template);
 	return EXIT_SUCCESS;
 }
 

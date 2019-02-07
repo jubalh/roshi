@@ -31,11 +31,10 @@ int main(int argc, char *argv[])
 		return EXIT_SUCCESS;
 	}
 
-	struct roshi_config config;
-	read_config(&config);
+	read_config();
 
 	int ret = parse_options(argc-1, argv+1);
-	free_config(&config);
+	free_config();
 
 	return ret;
 }
