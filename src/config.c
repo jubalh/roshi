@@ -54,14 +54,53 @@ static char* choose_config(struct roshi_config *config)
 
 static void parse_config(struct roshi_config *config, char *path)
 {
+	cfg_opt_t insert_template_opts[] = {
+		CFG_BOOL("omit_session_place", cfg_false, CFGF_NONE),
+		CFG_BOOL("omit_session_notes", cfg_false, CFGF_NONE),
+		CFG_BOOL("omit_session_feeling", cfg_false, CFGF_NONE),
+		CFG_BOOL("omit_exercise_station", cfg_false, CFGF_NONE),
+		CFG_BOOL("omit_exercise_weight", cfg_false, CFGF_NONE),
+		CFG_BOOL("omit_exercise_sets", cfg_false, CFGF_NONE),
+		CFG_BOOL("omit_exercise_reps", cfg_false, CFGF_NONE),
+		CFG_BOOL("omit_exercise_time", cfg_false, CFGF_NONE),
+		CFG_BOOL("omit_exercise_tempo", cfg_false, CFGF_NONE),
+		CFG_BOOL("omit_exercise_rest", cfg_false, CFGF_NONE),
+		CFG_BOOL("omit_exercise_warmup", cfg_false, CFGF_NONE),
+		CFG_BOOL("omit_exercise_notes", cfg_false, CFGF_NONE),
+		CFG_BOOL("omit_exercise_tags", cfg_false, CFGF_NONE),
+		CFG_END()
+	};
+
 	cfg_opt_t cfgopt[] = {
 		CFG_SIMPLE_STR("test", &config->test),
+		CFG_SEC("insert-template", insert_template_opts, CFGF_MULTI | CFGF_TITLE),
 		CFG_END()
 	};
 
 	cfg_t *cfg;
 	cfg = cfg_init(cfgopt, CFGF_IGNORE_UNKNOWN);
-	cfg_parse(cfg, path);
+
+	int ret =cfg_parse(cfg, path);
+
+	if (ret == CFG_FILE_ERROR)
+	{
+		fprintf(stderr, "libconfuse: file error");
+	}
+	else if (ret == CFG_PARSE_ERROR)
+	{
+		fprintf(stderr, "libconfuse: parse error");
+	}
+
+	/* Debug:
+	int n = cfg_size(cfg, "insert-template");
+	printf("%d configured:\n", n);
+	for (int i = 0; i < n; i++) {
+		cfg_t *tmpl = cfg_getnsec(cfg, "insert-template", i);
+		printf("template #%u (%s):\n", i + 1, cfg_title(tmpl));
+		printf("se_omit_place = %s\n", cfg_getbool(tmpl, "se_omit_place") ? "true" : "false");
+	}
+	*/
+
 	cfg_free(cfg);
 }
 
