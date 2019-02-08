@@ -17,8 +17,8 @@ static int parse_newlog(int argc, char *argv[])
 		{
 			// help
 			case 'h':
-				printf("roshi \033[3mfile_name\033[0m newlog: creates a new training log file.\n\n");
-				printf("-e: Fill database with example values\n");
+				printf("roshi \033[3mfile_name\033[0m newlog -- create new workoutlog\n\n");
+				printf("-e: Fill workoutlog with example data\n");
 				printf("-h: Display this help\n");
 				exit(EXIT_SUCCESS);
 				break;
@@ -44,7 +44,7 @@ static int parse_newlog(int argc, char *argv[])
 
 static void display_help_show()
 {
-	printf("roshi \033[3mfile_name\033[0m show \033[3msession_name\033[0m: displays a session.\n\n");
+	printf("roshi \033[3mfile_name\033[0m show \033[3msession_name\033[0m -- display a session\n\n");
 	printf("-i: Lookup session by ID instead of name\n");
 	printf("-h: Display this help\n");
 }
@@ -108,7 +108,7 @@ static int parse_add(int argc, char *argv[])
 		{
 			// help
 			case 'h':
-				printf("roshi \033[3mfile_name\033[0m add [insert-template]: adds a session.\n\n");
+				printf("roshi \033[3mfile_name\033[0m add [insert-template] -- add a session to workoutlog\n\n");
 				printf("-h: Display this help\n");
 				exit(EXIT_SUCCESS);
 				break;
@@ -132,7 +132,7 @@ static int parse_list(int argc, char *argv[])
 		{
 			// help
 			case 'h':
-				printf("roshi \033[3mfile_name\033[0m list: lists all logged sessions.\n\n");
+				printf("roshi \033[3mfile_name\033[0m list -- list all logged sessions\n\n");
 				printf("-h: Display this help\n");
 				exit(EXIT_SUCCESS);
 				break;
@@ -156,7 +156,7 @@ static int parse_analyze(int argc, char *argv[])
 		{
 			// help
 			case 'h':
-				printf("roshi \033[3mfile_name\033[0m analyze special analyzation functions.\n\n");
+				printf("roshi \033[3mfile_name\033[0m analyze -- special analyzation functions\n\n");
 				printf("-h: Display this help\n");
 				exit(EXIT_SUCCESS);
 				break;
@@ -192,7 +192,7 @@ static int parse_pr(int argc, char *argv[])
 		{
 			// help
 			case 'h':
-				printf("roshi \033[3mfile_name\033[0m pr: lists all personal records.\n\n");
+				printf("roshi \033[3mfile_name\033[0m pr -- list all personal records\n\n");
 				printf("-h: Display this help\n");
 				exit(EXIT_SUCCESS);
 				break;
