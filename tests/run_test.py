@@ -80,6 +80,9 @@ def test_add():
 		child.expect('Time/Duration \(min\): ')
 		child.sendline('')
 		child.expect('Tempo: ')
+		child.sendline('40101')
+		child.expect('Invalid input')
+		child.expect('Tempo: ')
 		child.sendline('4010')
 		child.expect('Rest time \(min\): ')
 		child.sendline('2')
@@ -126,9 +129,9 @@ def test_add():
 			print('add: \033[32mSUCCESS\033[37m')
 	except (pexpect.EOF,pexpect.TIMEOUT) as e:
 		print('add: \033[31mFAILURE\033[37m')
-		print('before: ' + child.before)
-		print('after: ' + child.after)
-		print(e)
+		#print('before: ' + child.before)
+		#print('after: ' + child.after)
+		#print(e)
 		sys.exit(1)
 
 	if child.isalive():
