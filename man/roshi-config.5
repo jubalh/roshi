@@ -13,9 +13,9 @@ insert-templates are used to tweak the subcommand
 .B add
 to suit the needs of the user.
 .B add
-adds a new session to your workout journal. It asks for certain fields which you can store in your journal. Sometimes we don't need all the fields, and to save time we can configure insert-templates to make roshi display only certain fields.
+adds a new session to the workout journal. It asks for certain fields which you can store in your journal. Sometimes we don't need all the fields. To save time we can configure insert-templates to make roshi display only certain fields.
 .PP
-By default all fields get displayed. This is a list of the possible fields you can omit:
+By default all fields get displayed. This is a list of the possible fields that can be omitted:
 .PP
 insert-template omitall {
   omit_session_place = true
@@ -24,7 +24,7 @@ insert-template omitall {
   omit_exercise_station = true
   omit_exercise_weight = true
   omit_exercise_sets = true
-  omit_exercise_reps  = true
+  omit_exercise_reps = true
   omit_exercise_time = true
   omit_exercise_tempo = true
   omit_exercise_rest = true
@@ -33,17 +33,17 @@ insert-template omitall {
   omit_exercise_tags = true
 }
 .PP
-For swimming for example you don't need to track any weights or reps. So you could create an insert-template for swimming:
+E.g. to track swimming sessions we don't need to track any weights or reps. So we could create an insert-template for swimming:
 .PP
 insert-template swimming {
   omit_exercise_station = true
   omit_exercise_weight = true
   omit_exercise_sets = true
-  omit_exercise_reps  = true
+  omit_exercise_reps = true
 }
 .SH COMMENTS
-One line comments must start with '#'.
-Multi line comments must are similar to C++, starting with '/*' and ending with '*/'. They must contain an extra '*' in each line in between start end.
+One-line comments must start with '#'.
+Multi-line comments must start with '/*' and end with '*/'. They must contain an extra '*' in each line between start and end.
 .SH AUTHOR
 Michael Vetter (jubalh@iodoru.org)
 .SH SEE ALSO

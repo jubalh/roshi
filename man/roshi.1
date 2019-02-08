@@ -7,8 +7,8 @@ roshi \- commandline workout journal
 [subcommand] [subcommand switches]
 .SH DESCRIPTION
 roshi is a commandline workout journal.
-It tracks your workouts in a a sqlite3 database file called workoutlog.
-There should be one file per user, like having a physical notebook per trainee.
+It tracks your workouts in a a sqlite3 database file in the following referred to as workoutlog.
+There should be one workoutlog per user, similar to having a physical notebook per trainee.
 .PP
 The first argument should always be the name of the workoutlog. Followed by a subcommand.
 .SH SUBCOMMANDS
@@ -24,6 +24,30 @@ fill workout log with sample data.
 .SS add [insert-template]
 .TP
 add a new session to the workoutlog. It can be followed by an optional insert-template. insert-templates have to be configured in the configuration file. See roshi-config(5).
+.PP
+First it asks to input some general session information:
+ * Session name -- A name for this session. E.g.: MartialArts.
+ * Place -- The name of the place you train at. For example: Namek.
+ * Date -- Date of the session.
+ * Start time -- Time the session starts.
+ * End time -- Time the session ends.
+ * Notes -- General notes about how the session went.
+ * Feeling -- Subjective feeling about the session. Must be a integer between -2 and 2.
+.PP
+Then roshi asks to insert the exercise details. To finish, insert an empty exercise name.
+ * Exercise name -- Name of the exercise. E.g.: Squat.
+ * Station -- Used for station training. E.g.: A1 for first exercise. A2 for second.
+ * Weight -- Weight used in kg. E.g.: 150
+ * Sets -- Sets of an exercise. E.g.: 5
+ * Reps -- Repetitions of an exercise. E.g.: 3
+ * Time/Duration -- Duration in minutes, that you do an exercise for. For example Horse Stance for 10 minutes.
+ * Tempo -- Poliquin 4 character based tempo notation. For example 41X0. Only integers and X allowed.
+   4 seconds eccentric movement, 1 second hold at bottom, explosive concentric movement, 0 seconds hold at the top.
+  * Rest time -- Rest in between exercises
+  * Warmup set -- In case you want to log your warmup sets for strength exercises. Possible values:yes, no
+  * Notes -- Notes about this exercise
+  * Tags -- Comma separated list of tags you want to assign to this exercise. For example PR for personal record
+
 .SS list
 .TP
 list logged sessions.
