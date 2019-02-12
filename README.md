@@ -6,9 +6,10 @@ roshi is a commandline workout journal.
 
 Dependencies:
 
-* SQLite3
-* Readline
 * CMake
+* libconfuse
+* Readline
+* SQLite3
 
 ```
 mkdir build; cd build

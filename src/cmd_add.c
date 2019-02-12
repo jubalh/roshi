@@ -24,7 +24,7 @@ enum SESSION_FIELDS {
 	SFEELING
 };
 
-// Nr of EXIERCISE_FIELDS
+// Nr of EXERCISE_FIELDS
 #define MAX_E_ENUM_FIELDS 11
 
 // Enum to access the readline buffer for the exercise
