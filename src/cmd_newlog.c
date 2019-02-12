@@ -9,12 +9,12 @@ static void create_example_db(int dummydata)
 	char *szErrMsg;
 
 	#define BASIC_QUERIES 4
-	#define ALL_QUERIES  14
+	#define ALL_QUERIES  17
 
 	char *query[] = { 
 		"CREATE TABLE `Sessions` ( `SessionId` INTEGER PRIMARY KEY, `Name` TEXT NOT NULL, `Place` TEXT, `Start` TEXT, `End` TEXT, `Note` TEXT, `Feeling` INTEGER )",
 
-		"CREATE TABLE `Exercises` ( `ExerciseId` INTEGER PRIMARY KEY, `Name` TEXT NOT NULL, `Sets` INTEGER DEFAULT 1, `Reps` INTEGER DEFAULT 1, `Time` TEXT, `Rest` TEXT, `Weight` NUMERIC DEFAULT 0, `isWarmup` INTEGER DEFAULT 0, `Note` TEXT, `Tempo` TEXT, `Station` TEXT, `SessionId` INTEGER, FOREIGN KEY(`SessionId`) REFERENCES `Session`(`SessionId`) )",
+		"CREATE TABLE `Exercises` ( `ExerciseId` INTEGER PRIMARY KEY, `Name` TEXT NOT NULL, `Sets` INTEGER DEFAULT 1, `Reps` INTEGER DEFAULT 1, `Time` TEXT, `Rest` TEXT, `Weight` NUMERIC DEFAULT 0, `Distance` NUMERIC DEFAULT 0, `isWarmup` INTEGER DEFAULT 0, `Note` TEXT, `Tempo` TEXT, `Station` TEXT, `SessionId` INTEGER, FOREIGN KEY(`SessionId`) REFERENCES `Session`(`SessionId`) )",
 
 		"CREATE TABLE `Tags` ( `TagId` INTEGER PRIMARY KEY, `Name` TEXT NOT NULL )",
 
@@ -32,7 +32,10 @@ static void create_example_db(int dummydata)
 		"INSERT INTO `ExercisesTags` (`TagId`, `ExerciseId`) VALUES ('1','4')",
 
 		"INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Bodyweight', 'Sunnypark', '2018-05-24 09:00', '2018-05-24 09:30')",
-		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `SessionId`) VALUES ('Push-Ups', '2', '20', '3')"
+		"INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `SessionId`) VALUES ('Push-Ups', '2', '20', '3')",
+
+		"INSERT INTO `Sessions` (`Name`, `Place`, `Start`, `End`) VALUES ('Swimming', 'OceanSpot1', '2018-08-08 08:00', '2018-08-08 08:30')",
+		"INSERT INTO `Exercises` (`Name`, `Distance`, `SessionId`) VALUES ('Swimming', '200', '4')"
 	};
 
 	int queries_count = BASIC_QUERIES;

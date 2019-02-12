@@ -25,7 +25,7 @@ enum SESSION_FIELDS {
 };
 
 // Nr of EXERCISE_FIELDS
-#define MAX_E_ENUM_FIELDS 11
+#define MAX_E_ENUM_FIELDS 12
 
 // Enum to access the readline buffer for the exercise
 enum EXERCISE_FIELDS {
@@ -39,7 +39,8 @@ enum EXERCISE_FIELDS {
 	EXNOTE,
 	EXTEMPO,
 	EXSTATION,
-	EXTAGS
+	EXTAGS,
+	EXDISTANCE
 };
 
 static bool validate(char *str, unsigned int flag, unsigned int max_length)
@@ -162,6 +163,10 @@ static void collect_submit_exercises(char **be, sqlite3_int64 session_id, bool *
 		{
 			read_valid(&be[EXREPS], "Reps: ", 5);
 		}
+		if (omit[OM_EXERCISE_DISTANCE] == false)
+		{
+			read_valid(&be[EXDISTANCE], "Distance (m): ", 0);
+		}
 		if (omit[OM_EXERCISE_TIME] == false)
 		{
 			read_valid(&be[EXTIME], "Time/Duration (min): ", 0);
@@ -216,7 +221,7 @@ static void collect_submit_exercises(char **be, sqlite3_int64 session_id, bool *
 
 		// submit exercise
 		char *szErrMsg = 0;
-		snprintf(query, 4095, "INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `Time`, `Tempo`, `Rest`, `isWarmup`, `Note`, `Station`, `SessionID`) VALUES ('%s', '%s', '%s', '%s', '%ld', '%s', '%ld', '%d', '%s', '%s', '%d')", be[EXNAME], be[EXSETS], be[EXREPS], be[EXWEIGHT], t_time, be[EXTEMPO], t_rest, t_isWarmup, be[EXNOTE], be[EXSTATION], session_id);
+		snprintf(query, 4095, "INSERT INTO `Exercises` (`Name`, `Sets`, `Reps`, `Weight`, `Time`, `Tempo`, `Rest`, `isWarmup`, `Note`, `Station`, `Distance`, `SessionID`) VALUES ('%s', '%s', '%s', '%s', '%ld', '%s', '%ld', '%d', '%s', '%s', '%s', '%d')", be[EXNAME], be[EXSETS], be[EXREPS], be[EXWEIGHT], t_time, be[EXTEMPO], t_rest, t_isWarmup, be[EXNOTE], be[EXSTATION], be[EXDISTANCE], session_id);
 		if(SQLITE_OK != sqlite3_exec(g_db, query, NULL, 0, &szErrMsg))
 		{
 			printf("SQL error: %s\n", szErrMsg);

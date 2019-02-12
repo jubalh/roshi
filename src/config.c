@@ -70,6 +70,7 @@ static int parse_config(char *path)
 		CFG_BOOL("omit_exercise_warmup", cfg_false, CFGF_NONE),
 		CFG_BOOL("omit_exercise_notes", cfg_false, CFGF_NONE),
 		CFG_BOOL("omit_exercise_tags", cfg_false, CFGF_NONE),
+		CFG_BOOL("omit_exercise_distance", cfg_false, CFGF_NONE),
 		CFG_END()
 	};
 
@@ -149,6 +150,7 @@ bool fill_omit_vars(const char *template_name, bool *b)
 				b[OM_EXERCISE_WARMUP] = cfg_getbool(tmpl, "omit_exercise_warmup");
 				b[OM_EXERCISE_NOTES] = cfg_getbool(tmpl, "omit_exercise_notes");
 				b[OM_EXERCISE_TAGS] = cfg_getbool(tmpl, "omit_exercise_tags");
+				b[OM_EXERCISE_DISTANCE] = cfg_getbool(tmpl, "omit_exercise_distance");
 				return true;
 			}
 		}
