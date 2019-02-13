@@ -77,6 +77,8 @@ def test_add():
 		child.sendline('5')
 		child.expect('Reps: ')
 		child.sendline('5')
+		child.expect('Distance \(m\): ')
+		child.sendline('500')
 		child.expect('Time/Duration \(min\): ')
 		child.sendline('')
 		child.expect('Tempo: ')
@@ -102,6 +104,8 @@ def test_add():
 		child.send('\n')
 		child.expect('Reps: ')
 		child.send('\n')
+		child.expect('Distance \(m\): ')
+		child.sendline('')
 		# test if minutes are transformed into seconds
 		child.expect('Time/Duration \(min\): ')
 		child.sendline('1')
@@ -129,9 +133,9 @@ def test_add():
 			print('add: \033[32mSUCCESS\033[37m')
 	except (pexpect.EOF,pexpect.TIMEOUT) as e:
 		print('add: \033[31mFAILURE\033[37m')
-		#print('before: ' + child.before)
-		#print('after: ' + child.after)
-		#print(e)
+		print('before: ' + child.before)
+		print('after: ' + child.after)
+		print(e)
 		sys.exit(1)
 
 	if child.isalive():

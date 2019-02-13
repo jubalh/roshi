@@ -5,6 +5,7 @@ ExerciseId = 1
       Time = 
       Rest = 
     Weight = 80
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -29,6 +30,7 @@ ExerciseId = 1
       Time = 
       Rest = 
     Weight = 80
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -53,6 +55,7 @@ ExerciseId = 1
       Time = 
       Rest = 
     Weight = 80
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -77,6 +80,7 @@ ExerciseId = 1
       Time = 
       Rest = 
     Weight = 80
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -101,6 +105,7 @@ ExerciseId = 1
       Time = 
       Rest = 
     Weight = 80
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -125,6 +130,207 @@ ExerciseId = 1
       Time = 
       Rest = 
     Weight = 80
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 3
+      Name = Bodyweight
+     Place = Sunnypark
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 1
+      Name = Squat
+      Sets = 5
+      Reps = 5
+      Time = 
+      Rest = 
+    Weight = 80
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 4
+      Name = Swimming
+     Place = OceanSpot1
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 1
+      Name = Squat
+      Sets = 5
+      Reps = 5
+      Time = 
+      Rest = 
+    Weight = 80
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 4
+      Name = Swimming
+     Place = OceanSpot1
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 2
+      Name = Deadlift
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 120
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 1
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 2
+      Name = Deadlift
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 120
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 1
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 2
+      Name = Deadlift
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 120
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 2
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 2
+      Name = Deadlift
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 120
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 2
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 2
+      Name = Deadlift
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 120
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 3
+      Name = Bodyweight
+     Place = Sunnypark
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 2
+      Name = Deadlift
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 120
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -149,14 +355,15 @@ ExerciseId = 2
       Time = 
       Rest = 
     Weight = 120
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
    Station = 
  SessionId = 1
- SessionId = 1
-      Name = Weightlifting
-     Place = Leimen
+ SessionId = 4
+      Name = Swimming
+     Place = OceanSpot1
      Starta
        Enda
       Note = 
@@ -173,110 +380,15 @@ ExerciseId = 2
       Time = 
       Rest = 
     Weight = 120
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
    Station = 
  SessionId = 1
- SessionId = 1
-      Name = Weightlifting
-     Place = Leimen
-     Starta
-       Enda
-      Note = 
-   Feeling = 
-     TagId = 1
-      Name = PR
-     TagId = 1
-ExerciseId = 4
-
-ExerciseId = 2
-      Name = Deadlift
-      Sets = 1
-      Reps = 1
-      Time = 
-      Rest = 
-    Weight = 120
-  isWarmup = 0
-      Note = 
-     Tempo = 
-   Station = 
- SessionId = 1
- SessionId = 2
-      Name = Weightlifting
-     Place = Leimen
-     Starta
-       Enda
-      Note = 
-   Feeling = 
-     TagId = 1
-      Name = PR
-     TagId = 1
-ExerciseId = 2
-
-ExerciseId = 2
-      Name = Deadlift
-      Sets = 1
-      Reps = 1
-      Time = 
-      Rest = 
-    Weight = 120
-  isWarmup = 0
-      Note = 
-     Tempo = 
-   Station = 
- SessionId = 1
- SessionId = 2
-      Name = Weightlifting
-     Place = Leimen
-     Starta
-       Enda
-      Note = 
-   Feeling = 
-     TagId = 1
-      Name = PR
-     TagId = 1
-ExerciseId = 4
-
-ExerciseId = 2
-      Name = Deadlift
-      Sets = 1
-      Reps = 1
-      Time = 
-      Rest = 
-    Weight = 120
-  isWarmup = 0
-      Note = 
-     Tempo = 
-   Station = 
- SessionId = 1
- SessionId = 3
-      Name = Bodyweight
-     Place = Sunnypark
-     Starta
-       Enda
-      Note = 
-   Feeling = 
-     TagId = 1
-      Name = PR
-     TagId = 1
-ExerciseId = 2
-
-ExerciseId = 2
-      Name = Deadlift
-      Sets = 1
-      Reps = 1
-      Time = 
-      Rest = 
-    Weight = 120
-  isWarmup = 0
-      Note = 
-     Tempo = 
-   Station = 
- SessionId = 1
- SessionId = 3
-      Name = Bodyweight
-     Place = Sunnypark
+ SessionId = 4
+      Name = Swimming
+     Place = OceanSpot1
      Starta
        Enda
       Note = 
@@ -293,6 +405,7 @@ ExerciseId = 3
       Time = 
       Rest = 
     Weight = 35
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -317,6 +430,7 @@ ExerciseId = 3
       Time = 
       Rest = 
     Weight = 35
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -341,6 +455,7 @@ ExerciseId = 3
       Time = 
       Rest = 
     Weight = 35
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -365,6 +480,7 @@ ExerciseId = 3
       Time = 
       Rest = 
     Weight = 35
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -389,6 +505,7 @@ ExerciseId = 3
       Time = 
       Rest = 
     Weight = 35
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -413,6 +530,7 @@ ExerciseId = 3
       Time = 
       Rest = 
     Weight = 35
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -430,6 +548,56 @@ ExerciseId = 3
      TagId = 1
 ExerciseId = 4
 
+ExerciseId = 3
+      Name = Squat
+      Sets = 10
+      Reps = 10
+      Time = 
+      Rest = 
+    Weight = 35
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 4
+      Name = Swimming
+     Place = OceanSpot1
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 3
+      Name = Squat
+      Sets = 10
+      Reps = 10
+      Time = 
+      Rest = 
+    Weight = 35
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 1
+ SessionId = 4
+      Name = Swimming
+     Place = OceanSpot1
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
 ExerciseId = 4
       Name = Squat
       Sets = 1
@@ -437,6 +605,7 @@ ExerciseId = 4
       Time = 
       Rest = 
     Weight = 150
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -461,6 +630,7 @@ ExerciseId = 4
       Time = 
       Rest = 
     Weight = 150
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -485,6 +655,7 @@ ExerciseId = 4
       Time = 
       Rest = 
     Weight = 150
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -509,6 +680,7 @@ ExerciseId = 4
       Time = 
       Rest = 
     Weight = 150
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -533,6 +705,7 @@ ExerciseId = 4
       Time = 
       Rest = 
     Weight = 150
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -557,6 +730,7 @@ ExerciseId = 4
       Time = 
       Rest = 
     Weight = 150
+  Distance = 0
   isWarmup = 0
       Note = 
      Tempo = 
@@ -565,6 +739,456 @@ ExerciseId = 4
  SessionId = 3
       Name = Bodyweight
      Place = Sunnypark
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 4
+      Name = Squat
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 150
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 2
+ SessionId = 4
+      Name = Swimming
+     Place = OceanSpot1
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 4
+      Name = Squat
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 150
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 2
+ SessionId = 4
+      Name = Swimming
+     Place = OceanSpot1
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 5
+      Name = Push-Ups
+      Sets = 2
+      Reps = 20
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 3
+ SessionId = 1
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 5
+      Name = Push-Ups
+      Sets = 2
+      Reps = 20
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 3
+ SessionId = 1
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 5
+      Name = Push-Ups
+      Sets = 2
+      Reps = 20
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 3
+ SessionId = 2
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 5
+      Name = Push-Ups
+      Sets = 2
+      Reps = 20
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 3
+ SessionId = 2
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 5
+      Name = Push-Ups
+      Sets = 2
+      Reps = 20
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 3
+ SessionId = 3
+      Name = Bodyweight
+     Place = Sunnypark
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 5
+      Name = Push-Ups
+      Sets = 2
+      Reps = 20
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 3
+ SessionId = 3
+      Name = Bodyweight
+     Place = Sunnypark
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 5
+      Name = Push-Ups
+      Sets = 2
+      Reps = 20
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 3
+ SessionId = 4
+      Name = Swimming
+     Place = OceanSpot1
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 5
+      Name = Push-Ups
+      Sets = 2
+      Reps = 20
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 0
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 3
+ SessionId = 4
+      Name = Swimming
+     Place = OceanSpot1
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 6
+      Name = Swimming
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 200
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 4
+ SessionId = 1
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 6
+      Name = Swimming
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 200
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 4
+ SessionId = 1
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 6
+      Name = Swimming
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 200
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 4
+ SessionId = 2
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 6
+      Name = Swimming
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 200
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 4
+ SessionId = 2
+      Name = Weightlifting
+     Place = Leimen
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 6
+      Name = Swimming
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 200
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 4
+ SessionId = 3
+      Name = Bodyweight
+     Place = Sunnypark
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 6
+      Name = Swimming
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 200
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 4
+ SessionId = 3
+      Name = Bodyweight
+     Place = Sunnypark
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 4
+
+ExerciseId = 6
+      Name = Swimming
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 200
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 4
+ SessionId = 4
+      Name = Swimming
+     Place = OceanSpot1
+     Starta
+       Enda
+      Note = 
+   Feeling = 
+     TagId = 1
+      Name = PR
+     TagId = 1
+ExerciseId = 2
+
+ExerciseId = 6
+      Name = Swimming
+      Sets = 1
+      Reps = 1
+      Time = 
+      Rest = 
+    Weight = 0
+  Distance = 200
+  isWarmup = 0
+      Note = 
+     Tempo = 
+   Station = 
+ SessionId = 4
+ SessionId = 4
+      Name = Swimming
+     Place = OceanSpot1
      Starta
        Enda
       Note = 
