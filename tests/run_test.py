@@ -56,6 +56,18 @@ def test_add():
 		child.send('Weight\t\n')
 		child.expect('Place: ')
 		child.sendline('Leimen')
+		# test invalid date; longer
+		child.expect('Date: ')
+		child.send('a\n')
+		child.expect('Invalid input')
+		# test invalid date; nr where digit
+		child.expect('Date: ')
+		child.send('\ba\n')
+		child.expect('Invalid input')
+		# test invalid date; wrong seperator
+		child.expect('Date: ')
+		child.send('\b\b\b111\n')
+		child.expect('Invalid input')
 		child.expect('Date: ')
 		child.send('\n')
 		child.expect('Start time: ')

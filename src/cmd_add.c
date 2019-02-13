@@ -5,6 +5,7 @@
 #include <stdio.h>  // printf()
 #include <string.h> // strtok(), strcmp()
 #include <readline/readline.h> // rl_*()
+#include <ctype.h> // isdigit()
 #include "sql.h" // open_db()
 #include "cmd_add_readline_completers.h" // cmd_add_completion_*()
 #include "cmd_add_readline_hooks.h" // readline_*_template_hook()
@@ -43,6 +44,10 @@ enum EXERCISE_FIELDS {
 	EXDISTANCE
 };
 
+enum INPUT_VALIDATE_ENUM {
+	INP_VALIDATE_DATE = 1,
+};
+
 static bool validate(char *str, unsigned int flag, unsigned int max_length)
 {
 	// dont allow some SQL chars
@@ -56,22 +61,40 @@ static bool validate(char *str, unsigned int flag, unsigned int max_length)
 		return false;
 	}
 
+	if (flag == INP_VALIDATE_DATE)
+	{
+		if (strlen(str) != 10 ||
+				str[4] != '-' ||
+				str[7] != '-')
+		{
+			return false;
+		}
+		for (int i = 0; i < strlen(str); i++)
+		{
+			if (isdigit(str[i]) == 0)
+			{
+				if ((i == 4) || (i == 7))
+					continue;
+				return false;
+			}
+		}
+	}
 	return true;
 }
 
-static void read_valid(char **dst, char *prompt, unsigned int max_length)
+static void read_valid(char **dst, char *prompt, unsigned int flag, unsigned int max_length)
 {
 	bool valid = false;
 	*dst = readline(prompt);
 
-	valid = validate(*dst, 0, max_length);
+	valid = validate(*dst, flag, max_length);
 	while (!valid)
 	{
 		printf("Invalid input\n");
 
 		free(*dst);
 		*dst = readline(prompt);
-		valid = validate(*dst, 0, max_length);
+		valid = validate(*dst, flag, max_length);
 	}
 }
 
@@ -83,32 +106,32 @@ static sqlite3_int64 collect_submit_session(char **bs, bool* omit)
 	rl_attempted_completion_function = cmd_add_completion_session_name;
 
 	// collect session info
-	read_valid(&bs[SNAME], "Session name: ", 0);
+	read_valid(&bs[SNAME], "Session name: ", 0, 0);
 
 	if (omit[OM_SESSION_PLACE] == false)
 	{
 		rl_attempted_completion_function = cmd_add_completion_session_place;
-		read_valid(&bs[SPLACE], "Place: ", 0);
+		read_valid(&bs[SPLACE], "Place: ", 0, 0);
 		rl_attempted_completion_function = cmd_add_completion_none;
 	}
 
 	rl_startup_hook = readline_date_template_hook;
-	read_valid(&bs[SDATE], "Date: ", 10);
+	read_valid(&bs[SDATE], "Date: ", INP_VALIDATE_DATE, 10);
 	rl_startup_hook = readline_time_template_hook;
-	read_valid(&bs[SSTART], "Start time: ", 5);
-	read_valid(&bs[SEND], "End time: ", 5);
+	read_valid(&bs[SSTART], "Start time: ", 0, 5);
+	read_valid(&bs[SEND], "End time: ", 0, 5);
 	rl_startup_hook = NULL;
 
 	if (omit[OM_SESSION_NOTES] == false)
 	{
 		//TODO: create big enough buffer here and for query. since notes could be big.
-		read_valid(&bs[SNOTES], "Notes: ", 0);
+		read_valid(&bs[SNOTES], "Notes: ", 0, 0);
 	}
 
 	if (omit[OM_SESSION_FEELING] == false)
 	{
 		rl_startup_hook = readline_feeling_template_hook;
-		read_valid(&bs[SFEELING], "Feeling (-2 to 2): ", 2);
+		read_valid(&bs[SFEELING], "Feeling (-2 to 2): ", 0, 2);
 		rl_startup_hook = NULL;
 	}
 
@@ -141,7 +164,7 @@ static void collect_submit_exercises(char **be, sqlite3_int64 session_id, bool *
 	printf("\nExercises:\n");
 
 	rl_attempted_completion_function = cmd_add_completion_exercise_name;
-	read_valid(&be[EXNAME], "Exercise name: ", 0);
+	read_valid(&be[EXNAME], "Exercise name: ", 0, 0);
 	rl_attempted_completion_function = cmd_add_completion_none;
 
 	char query[4096];
@@ -149,50 +172,50 @@ static void collect_submit_exercises(char **be, sqlite3_int64 session_id, bool *
 	{
 		if (omit[OM_EXERCISE_STATION] == false)
 		{
-			read_valid(&be[EXSTATION], "Station: ", 5);
+			read_valid(&be[EXSTATION], "Station: ", 0, 5);
 		}
 		if (omit[OM_EXERCISE_WEIGHT] == false)
 		{
-			read_valid(&be[EXWEIGHT], "Weight (kg): ", 0);
+			read_valid(&be[EXWEIGHT], "Weight (kg): ", 0, 0);
 		}
 		if (omit[OM_EXERCISE_SETS] == false)
 		{
-			read_valid(&be[EXSETS], "Sets: ", 5);
+			read_valid(&be[EXSETS], "Sets: ", 0, 5);
 		}
 		if (omit[OM_EXERCISE_REPS] == false)
 		{
-			read_valid(&be[EXREPS], "Reps: ", 5);
+			read_valid(&be[EXREPS], "Reps: ", 0, 5);
 		}
 		if (omit[OM_EXERCISE_DISTANCE] == false)
 		{
-			read_valid(&be[EXDISTANCE], "Distance (m): ", 0);
+			read_valid(&be[EXDISTANCE], "Distance (m): ", 0, 0);
 		}
 		if (omit[OM_EXERCISE_TIME] == false)
 		{
-			read_valid(&be[EXTIME], "Time/Duration (min): ", 0);
+			read_valid(&be[EXTIME], "Time/Duration (min): ", 0, 0);
 		}
 		if (omit[OM_EXERCISE_TEMPO] == false)
 		{
-			read_valid(&be[EXTEMPO], "Tempo: ", 4);
+			read_valid(&be[EXTEMPO], "Tempo: ", 0, 4);
 		}
 		if (omit[OM_EXERCISE_REST] == false)
 		{
-			read_valid(&be[EXREST], "Rest time (min): ", 0);
+			read_valid(&be[EXREST], "Rest time (min): ", 0, 0);
 		}
 		if (omit[OM_EXERCISE_WARMUP] == false)
 		{
 			rl_startup_hook = readline_warmup_template_hook;
-			read_valid(&be[EXISWARMUP], "Warmup set: ", 3);
+			read_valid(&be[EXISWARMUP], "Warmup set: ", 0,3);
 			rl_startup_hook = NULL;
 		}
 		if (omit[OM_EXERCISE_NOTES] == false)
 		{
-			read_valid(&be[EXNOTE], "Notes: ", 0);
+			read_valid(&be[EXNOTE], "Notes: ", 0, 0);
 		}
 		if (omit[OM_EXERCISE_TAGS] == false)
 		{
 			rl_attempted_completion_function = cmd_add_completion_exercise_tag;
-			read_valid(&be[EXTAGS], "Tags: ", 0);
+			read_valid(&be[EXTAGS], "Tags: ", 0, 0);
 			rl_attempted_completion_function = cmd_add_completion_none;
 		}
 
@@ -278,7 +301,7 @@ static void collect_submit_exercises(char **be, sqlite3_int64 session_id, bool *
 		}
 
 		rl_attempted_completion_function = cmd_add_completion_exercise_name;
-		read_valid(&be[EXNAME], "\nExercise name: ", 0);
+		read_valid(&be[EXNAME], "\nExercise name: ", 0, 0);
 		rl_attempted_completion_function = cmd_add_completion_none;
 	}
 
