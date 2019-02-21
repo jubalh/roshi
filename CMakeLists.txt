@@ -15,6 +15,7 @@ set (SRC
 	src/options.c
 	src/cmd_analyze.c
 	src/config.c
+	src/validate_input.c
 	)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")

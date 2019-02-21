@@ -10,11 +10,11 @@
 #include <stdio.h>  // printf()
 #include <string.h> // strtok(), strcmp()
 #include <readline/readline.h> // rl_*()
-#include <ctype.h> // isdigit()
 #include "sql.h" // open_db()
 #include "cmd_add_readline_completers.h" // cmd_add_completion_*()
 #include "cmd_add_readline_hooks.h" // readline_*_template_hook()
 #include "config.h" // fill_omit_vars()
+#include "validate_input.h" // validate()
 
 // Nr of SESSION_FIELDS
 #define MAX_S_ENUM_FIELDS 7
@@ -48,58 +48,6 @@ enum EXERCISE_FIELDS {
 	EXTAGS,
 	EXDISTANCE
 };
-
-enum INPUT_VALIDATE_ENUM {
-	INP_VALIDATE_DATE = 1,
-	INP_VALIDATE_TIME = 2,
-};
-
-static bool validate(char *str, unsigned int flag, unsigned int max_length)
-{
-	// dont allow some SQL chars
-	if ( (strchr(str, '\'') > 0) || (strchr(str, '"') > 0) || (strchr(str, ';') > 0) )
-	{
-		return false;
-	}
-	// check for max length
-	if ((max_length != 0) && (strlen(str) > max_length))
-	{
-		return false;
-	}
-
-	if (flag == INP_VALIDATE_DATE)
-	{
-		if (strlen(str) != 10 ||
-				str[4] != '-' ||
-				str[7] != '-')
-		{
-			return false;
-		}
-		for (int i = 0; i < strlen(str); i++)
-		{
-			if (isdigit(str[i]) == 0)
-			{
-				if ((i == 4) || (i == 7))
-					continue;
-				return false;
-			}
-		}
-	}
-	else if (flag == INP_VALIDATE_TIME)
-	{
-		if (strlen(str) != 5 ||
-				str[2] != ':' ||
-				isdigit(str[0]) == 0 ||
-				isdigit(str[1]) == 0 ||
-				isdigit(str[3]) == 0 ||
-				isdigit(str[4]) == 0)
-		{
-			return false;
-		}
-	}
-
-	return true;
-}
 
 static void read_valid(char **dst, char *prompt, unsigned int flag, unsigned int max_length)
 {
