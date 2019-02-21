@@ -51,6 +51,7 @@ enum EXERCISE_FIELDS {
 
 enum INPUT_VALIDATE_ENUM {
 	INP_VALIDATE_DATE = 1,
+	INP_VALIDATE_TIME = 2,
 };
 
 static bool validate(char *str, unsigned int flag, unsigned int max_length)
@@ -84,6 +85,19 @@ static bool validate(char *str, unsigned int flag, unsigned int max_length)
 			}
 		}
 	}
+	else if (flag == INP_VALIDATE_TIME)
+	{
+		if (strlen(str) != 5 ||
+				str[2] != ':' ||
+				isdigit(str[0]) == 0 ||
+				isdigit(str[1]) == 0 ||
+				isdigit(str[3]) == 0 ||
+				isdigit(str[4]) == 0)
+		{
+			return false;
+		}
+	}
+
 	return true;
 }
 
@@ -123,8 +137,8 @@ static sqlite3_int64 collect_submit_session(char **bs, bool* omit)
 	rl_startup_hook = readline_date_template_hook;
 	read_valid(&bs[SDATE], "Date: ", INP_VALIDATE_DATE, 10);
 	rl_startup_hook = readline_time_template_hook;
-	read_valid(&bs[SSTART], "Start time: ", 0, 5);
-	read_valid(&bs[SEND], "End time: ", 0, 5);
+	read_valid(&bs[SSTART], "Start time: ", INP_VALIDATE_TIME, 5);
+	read_valid(&bs[SEND], "End time: ", INP_VALIDATE_TIME, 5);
 	rl_startup_hook = NULL;
 
 	if (omit[OM_SESSION_NOTES] == false)

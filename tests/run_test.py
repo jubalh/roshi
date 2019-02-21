@@ -73,6 +73,13 @@ def test_add():
 		child.expect('Invalid input')
 		child.expect('Date: ')
 		child.send('\n')
+		# test invalid time
+		child.expect('Start time: ')
+		child.send('1\n')
+		child.expect('Invalid input')
+		child.expect('Start time: ')
+		child.send('\ba\n')
+		child.expect('Invalid input')
 		child.expect('Start time: ')
 		child.send('\n')
 		child.expect('End time: ')
